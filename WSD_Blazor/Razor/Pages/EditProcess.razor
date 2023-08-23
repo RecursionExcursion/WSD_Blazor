@@ -1,0 +1,83 @@
+@page "/edit/{modelJson}"
+
+@code {
+    [Parameter]
+    public string ModelJson { get; set; }
+
+    private ProcessModel Model { get; set; }
+
+    private DataManager dataManager = DataManager.Instance;
+
+    private ProcessModel? initialModelCopy;
+
+    protected override void OnInitialized()
+    {
+        Model = JsonSerializer.Deserialize<ProcessModel>(ModelJson) ?? throw new ArgumentNullException(nameof(Model));
+        if (!string.IsNullOrEmpty(Model.Name))
+        {
+            initialModelCopy = new()
+                {
+                    Name = Model.Name,
+                    DeployParametersList = Model.DeployParametersList
+                };
+        }
+    }
+
+    [Inject]
+    private NavigationManager? NavigationManager { get; set; }
+    private void NavigateHome() => NavigationManager?.NavigateTo("/");
+
+    private void AddProcessClick() => Model.DeployParametersList.Add(new ProcessModel.DeployableParams());
+
+
+    private void SubmitClick()
+    {
+        if (!string.IsNullOrEmpty(Model.Name))
+        {
+            if (initialModelCopy == null)
+            {
+                dataManager.AddNewProcess(Model);
+            }
+            else
+            {
+                dataManager.UpdateProcess(initialModelCopy, Model);
+            }
+            NavigateHome();
+        }
+    }
+
+    private void BackClick() => NavigateHome();
+
+    private void DeleteClick()
+    {
+        if (initialModelCopy != null)
+        {
+            dataManager.RemoveProcess(initialModelCopy);
+            NavigateHome();
+        }
+    }
+}
+
+<div>
+    <div>
+        <div>
+            <button @onclick="BackClick">Back</button>
+        </div>
+        @if (initialModelCopy != null)
+        {
+            <div>
+                <button @onclick="DeleteClick">Delete</button>
+            </div>
+        }
+    </div>
+
+    <div>
+        <label>Name: </label><input @bind=Model.Name />
+    </div>
+
+    <ProcessList Params=Model.DeployParametersList />
+
+    <div>
+        <button @onclick="SubmitClick">Submit</button>
+    </div>
+</div>

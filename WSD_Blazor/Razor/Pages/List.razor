@@ -1,0 +1,41 @@
+@page "/list"
+
+@code {
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+
+    List<ProcessModel> processModels = DataManager.Instance.ProcessModels.Values.ToList();
+
+    private void DeployClick(ProcessModel process)
+    {
+        ProcessManager.ExecuteProcesses(process);
+    }
+
+    private void EditClick(ProcessModel model) => SendModelToPage(model);
+
+    private void NewProcessClick() => SendModelToPage(new ProcessModel());
+
+    private void SendModelToPage(ProcessModel model)
+    {
+        string serializedModel = JsonSerializer.Serialize(model);
+        string json = HttpUtility.UrlEncode(serializedModel);
+        NavigationManager.NavigateTo($"/edit/{json}");
+    }
+}
+
+<div>
+    <h1>Processes</h1>
+    <div>
+        <button @onclick="NewProcessClick">New Process</button>
+    </div>
+    <ul>
+        @foreach (var p in processModels)
+        {
+            <li>
+                @p.Name
+                <button @onclick="() => DeployClick(p)">Deploy</button>
+                <button @onclick="() => EditClick(p)">Edit</button>
+            </li>
+        }
+    </ul>
+</div>

@@ -1,0 +1,48 @@
+@code {
+    [Parameter]
+    public List<ProcessModel.DeployableParams> Params { get; set; }
+
+    private void AddProcessClick()
+    {
+        Params.Add(new ProcessModel.DeployableParams());
+    }
+
+    private void DeleteClick(ProcessModel.DeployableParams p)
+    {
+        Params.Remove(p);
+    }
+
+    private bool IsExeURL(string exe)
+    {
+        if (string.IsNullOrEmpty(exe))
+        {
+            return false;
+        }
+        return Regex.IsMatch(exe, "^(http:|https:)");
+    }
+}
+
+<div>
+
+    <div>
+        <button @onclick="AddProcessClick">Add Process</button>
+    </div>
+    <div>
+        @foreach (var x in Params)
+        {
+            <div class="divrow">
+                <label>Url/Exe: </label>
+                <input @bind:event="oninput" @bind=x.Exe />
+
+                <div hidden="@IsExeURL(x.Exe)" class="hide">
+                    <label>Args: </label> <input @bind=x.Args />
+                </div>
+
+                <button @onclick="() => DeleteClick(x)"> Delete</button>
+            </div>
+        }
+    </div>
+</div>
+
+
+
