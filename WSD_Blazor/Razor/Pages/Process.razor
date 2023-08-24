@@ -1,4 +1,4 @@
-@page "/edit/{modelJson}"
+@page "/process/{modelJson}"
 
 @code {
     [Parameter]
@@ -19,6 +19,7 @@
                 {
                     Name = Model.Name,
                     DeployParametersList = Model.DeployParametersList
+
                 };
         }
     }
@@ -59,7 +60,7 @@
 }
 
 <div>
-    <div>
+    <div class="divrow">
         <div>
             <button @onclick="BackClick">Back</button>
         </div>
@@ -72,10 +73,10 @@
     </div>
 
     <div>
-        <label>Name: </label><input @bind=Model.Name />
+        <label>Name: </label><input @bind=Model.Name autocomplete="nope" />
     </div>
 
-    <ProcessList Params=Model.DeployParametersList />
+    <ProcessList Model=Model />
 
     <div>
         <button @onclick="SubmitClick">Submit</button>

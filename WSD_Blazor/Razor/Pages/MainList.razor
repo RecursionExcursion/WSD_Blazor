@@ -19,14 +19,14 @@
     {
         string serializedModel = JsonSerializer.Serialize(model);
         string json = HttpUtility.UrlEncode(serializedModel);
-        NavigationManager.NavigateTo($"/edit/{json}");
+        NavigationManager.NavigateTo($"/process/{json}");
     }
 }
 
-<div>
+<div class="centered-content">
     <h1>Processes</h1>
     <div>
-        <button @onclick="NewProcessClick">New Process</button>
+        <button class="newButton" @onclick="NewProcessClick">New Process</button>
     </div>
     <ul>
         @foreach (var p in processModels)

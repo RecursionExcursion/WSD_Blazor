@@ -8,11 +8,11 @@
 
             foreach (var p in model.DeployParametersList)
             {
-                if (p.Args == null)
+                if (p.Type == ProcessType.Url)
                 {
                     executor.AddUrlProcess(p.Exe);
                 }
-                else
+                else if(p.Type == ProcessType.Exe)
                 {
                     executor.AddExeProcess(p.Exe, p.Args);
 

@@ -1,15 +1,48 @@
 @code {
     [Parameter]
-    public List<ProcessModel.DeployableParams> Params { get; set; }
+    public ProcessModel Model { get; set; }
+
+    private List<ProcessModel.DeployableParams> Params { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Params = Model.DeployParametersList;
+    }
 
     private void AddProcessClick()
     {
-        Params.Add(new ProcessModel.DeployableParams());
+
+        var newParam = new ProcessModel.DeployableParams();
+        newParam.Type = ProcessType.Url;
+        Params.Add(newParam);
     }
 
     private void DeleteClick(ProcessModel.DeployableParams p)
     {
         Params.Remove(p);
+    }
+
+    private bool IsUrl(ProcessModel.DeployableParams p) => p.Type == ProcessType.Url;
+    private bool IsExe(ProcessModel.DeployableParams p) => p.Type == ProcessType.Exe;
+
+    private void SetUrl(ProcessModel.DeployableParams p) => p.Type = ProcessType.Url;
+    private void SetExe(ProcessModel.DeployableParams p) => p.Type = ProcessType.Exe;
+
+
+    //private void SetType(ProcessModel.DeployableParams p) => p.Type = p.Type == ProcessType.Exe ? ProcessType.Url : ProcessType.Exe;
+    private void SetType(ProcessModel.DeployableParams p)
+    {
+
+        if (p.Type == ProcessType.Exe)
+        {
+            p.Type = ProcessType.Url;
+        }
+        else
+        {
+            p.Type = ProcessType.Exe;
+        }
+
+
     }
 
     private bool IsExeURL(string exe)
@@ -23,26 +56,32 @@
 }
 
 <div>
-
     <div>
         <button @onclick="AddProcessClick">Add Process</button>
     </div>
     <div>
-        @foreach (var x in Params)
+
+        @foreach (var p in Params)
         {
             <div class="divrow">
-                <label>Url/Exe: </label>
-                <input @bind:event="oninput" @bind=x.Exe />
+                <div class="divrow">
+                    <input type="radio" id="exe" name="radioOptions" checked="@IsExe(p)" @onchange="()=>SetType(p)" />
+                    <label for="option1">Exe</label>
 
-                <div hidden="@IsExeURL(x.Exe)" class="hide">
-                    <label>Args: </label> <input @bind=x.Args />
+                    <input type="radio" id="url" name="radioOptions" checked="@IsUrl(p)" @onchange="()=>SetType(p)" />
+                    <label for="option2">Url</label>
                 </div>
 
-                <button @onclick="() => DeleteClick(x)"> Delete</button>
+                <label hidden="@(!IsExe(p))">Exe:</label>
+                <label hidden="@(IsExe(p))">Url:</label>
+                <input @bind:event="oninput" @bind=p.Exe />
+
+                <div hidden="@(!IsExe(p))" class="hide">
+                    <label>Args:</label> <input @bind=p.Args />
+                </div>
+
+                <button @onclick="() => DeleteClick(p)">Delete</button>
             </div>
         }
     </div>
 </div>
-
-
-

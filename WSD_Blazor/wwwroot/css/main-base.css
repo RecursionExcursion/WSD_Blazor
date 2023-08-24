@@ -1,0 +1,34 @@
+/* TODO - Move to css */
+
+.divrow {
+    display: flex
+}
+
+.centered-content {
+    display: flex;
+    border: 1px solid red;
+    flex-direction: column;
+    text-align: center; /* Center horizontally */
+    /* Optional: Set a height to center within the viewport */
+}
+
+
+.main {
+    justify-content: center; /* Center horizontally */
+    align-items: center;
+}
+
+ul {
+    margin: 20px auto;
+}
+
+li {
+    width: fit-content;
+}
+
+
+
+/*TODO For Testing only Remove*/
+div {
+    border: 1px solid black; /* 1px solid border with black color */
+}

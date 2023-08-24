@@ -16,12 +16,14 @@
         public ProcessModel()
         {
             DeployParametersList = new List<DeployableParams>();
+            Name = "";
         }
 
         public class DeployableParams
         {
-            public string Exe { get; set; }
+            public string Exe { get; set; } = "";
             public string? Args { get; set; }
+            public ProcessType Type { get; set; }
 
             public DeployableParams(string exe, string? args)
             {
@@ -31,5 +33,11 @@
 
             public DeployableParams() {  }
         }
+    }
+
+    public enum ProcessType
+    {
+        Exe,
+        Url
     }
 }
