@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using WSD_Blazor.Repository;
 using WSD_Blazor.Service.Deployer;
 
 namespace WSD_Blazor.Data
@@ -28,27 +29,33 @@ namespace WSD_Blazor.Data
             //Creates Json file if it does not already exist
             if (File.Exists(GetFilePath()) == false)
             {
-                Dictionary<string, ProcessModel> emptyUsers = new();
-                SaveData(emptyUsers);
+                AppState emptyState = new();
+                SaveData(emptyState);
             }
         }
 
-        public void SaveData(Dictionary<string, ProcessModel> users)
+        public void SaveData(AppState state)
         {
-            var json = JsonSerializer.Serialize(users);
+            var json = JsonSerializer.Serialize(state);
 
             File.WriteAllText(GetFilePath(), json);
         }
 
-        public Dictionary<string, ProcessModel>? LoadData()
+        public AppState? LoadData()
         {
-
             string[] lines = File.ReadAllLines(GetFilePath());
-
             string usersJson = string.Join(Environment.NewLine, lines);
-            Dictionary<string, ProcessModel>? userProfiles = JsonSerializer.Deserialize<Dictionary<string, ProcessModel>>(usersJson);
+            AppState? userProfiles = JsonSerializer.Deserialize<AppState>(usersJson);
             return userProfiles;
         }
+        //public Dictionary<string, ProcessModel>? LoadData()
+        //{
+        //    string[] lines = File.ReadAllLines(GetFilePath());
+
+        //    string usersJson = string.Join(Environment.NewLine, lines);
+        //    Dictionary<string, ProcessModel>? userProfiles = JsonSerializer.Deserialize<Dictionary<string, ProcessModel>>(usersJson);
+        //    return userProfiles;
+        //}
 
         private static void CreateFilePathIfAbsent() => Directory.CreateDirectory(GetFolderPath());
 

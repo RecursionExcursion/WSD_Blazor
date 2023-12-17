@@ -1,5 +1,5 @@
-﻿using System.Reflection;
-using WSD_Blazor.Data;
+﻿using WSD_Blazor.Data;
+using WSD_Blazor.Repository.State;
 using WSD_Blazor.Service.Deployer;
 
 namespace WSD_Blazor.Repository
@@ -12,34 +12,34 @@ namespace WSD_Blazor.Repository
 
         public static DataManager Instance => lazyInstance.Value;
 
-        public Dictionary<string, ProcessModel> ProcessModels { get; set; } = serializer.LoadData() ?? new();
+        public AppState State { get; set; } = serializer.LoadData() ?? new();
 
         private DataManager() { }
 
         public void AddNewProcess(ProcessModel model)
         {
-            if (ProcessModels.TryAdd(model.Name, model))
+            if (State.ProcessModels.TryAdd(model.Name, model))
             {
                 SyncData();
             }
         }
 
-        public ProcessModel GetProcessByName(string name) => ProcessModels[name];
+        public ProcessModel GetProcessByName(string name) => State.ProcessModels[name];
 
         public void RemoveProcess(ProcessModel model)
         {
             if (model != null)
             {
-                ProcessModels.Remove(model.Name);
+                State.ProcessModels.Remove(model.Name);
                 SyncData();
             }
         }
 
         public void UpdateProcess(ProcessModel model)
         {
-            if (ProcessModels.ContainsKey(model.Name))
+            if (State.ProcessModels.ContainsKey(model.Name))
             {
-                ProcessModels[model.Name] = model;
+                State.ProcessModels[model.Name] = model;
             }
             SyncData();
         }
@@ -50,14 +50,27 @@ namespace WSD_Blazor.Repository
             {
                 RemoveProcess(initalModel);
             }
-            ProcessModels[newModel.Name] = newModel;
+            State.ProcessModels[newModel.Name] = newModel;
+            SyncData();
+        }
+
+
+        public void AddExecutable(string name, string path)
+        {
+            State.Executables.Add(new(name, path));
+            SyncData();
+        }
+
+        public void DeleteExecutable(Executable exe)
+        {
+            State.Executables.Remove(exe);
             SyncData();
         }
 
         public void SyncData() => SaveToFile();
 
-        private void LoadFromFile() => ProcessModels = serializer.LoadData() ?? new Dictionary<string, ProcessModel>();
+        private void LoadFromFile() => State = serializer.LoadData() ?? new AppState();
 
-        private void SaveToFile() => serializer.SaveData(ProcessModels);
+        private void SaveToFile() => serializer.SaveData(State);
     }
 }

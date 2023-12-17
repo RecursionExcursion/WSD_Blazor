@@ -2,7 +2,7 @@
 
 @code {
     [Parameter]
-    public string ModelJson { get; set; }
+    public string? ModelJson { get; set; }
 
     private ProcessModel Model { get; set; }
 
@@ -19,7 +19,6 @@
                 {
                     Name = Model.Name,
                     DeployParametersList = Model.DeployParametersList
-
                 };
         }
     }
@@ -59,26 +58,25 @@
     }
 }
 
-<div>
-    <div class="divrow">
-        <div>
-            <button @onclick="BackClick">Back</button>
-        </div>
+<div class="process-builder">
+    <div class="btn-container">
+        <button class="btn-primary" @onclick="BackClick">Back</button>
         @if (initialModelCopy != null)
         {
-            <div>
-                <button @onclick="DeleteClick">Delete</button>
-            </div>
+            <button class="btn-primary" @onclick="DeleteClick">Delete</button>
         }
     </div>
 
-    <div>
-        <label>Name: </label><input @bind=Model.Name autocomplete="nope" />
-    </div>
+    <div class="centered-content">
 
-    <ProcessList Model=Model />
+        <div class="divrow">
+            <label>Name: </label><input @bind=Model.Name autocomplete="nope" />
+        </div>
 
-    <div>
-        <button @onclick="SubmitClick">Submit</button>
+        <ProcessListComp Model=Model />
+
+        <div>
+            <button class="divrow btn-primary" @onclick="SubmitClick">Submit</button>
+        </div>
     </div>
 </div>

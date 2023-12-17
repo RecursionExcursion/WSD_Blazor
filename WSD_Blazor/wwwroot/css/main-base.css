@@ -1,34 +1,102 @@
 /* TODO - Move to css */
 
 .divrow {
-    display: flex
+    display: flex;
+    margin: 20px auto;
+    justify-content: center;
+    gap: 10px
 }
 
 .centered-content {
     display: flex;
-    border: 1px solid red;
     flex-direction: column;
-    text-align: center; /* Center horizontally */
-    /* Optional: Set a height to center within the viewport */
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    align-content: center;
+    justify-content: center;
 }
-
 
 .main {
-    justify-content: center; /* Center horizontally */
+    justify-content: center;
     align-items: center;
+    background-color: var(--darkest-blue);
+    height: 100vh;
 }
 
-ul {
+.buffer {
     margin: 20px auto;
 }
 
+/*ul {*/
+/*    margin: 20px auto;*/
+/*}
+
 li {
     width: fit-content;
+}*/
+
+/*button {
+    color: #fff;
+    background-color: #ccc;
+    border-color: #141313;
+}*/
+
+.listborder {
+    /*    border: 1px solid black;*/
+    display: flex;
 }
 
 
 
 /*TODO For Testing only Remove*/
+/*div {*/
+/*    border: 1px solid black;  1px solid border with black color */
+/*background-color: #e0dbdb;
+}*/
+
+
+ul, ol {
+    margin: 20px auto;
+    padding: 0;
+    list-style: none;
+    background-color: #f7f7f7;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+li {
+    margin-bottom: 5px;
+    padding: 5px 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.mainDiv {
+}
+/*
 div {
-    border: 1px solid black; /* 1px solid border with black color */
+    height: 100vh;
+    background-color: blueviolet;
+}*/
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+
+:root {
+    --darkest-blue: #293133;
+    --dark-blue: #2E474C;
+    --medium-blue: #337380;
+    --light-blue: #249BB3;
+    --lightest-blue: #00BEE6;
+    --yellow: #F9D53E;
+    --white: #FFFFFF;
 }

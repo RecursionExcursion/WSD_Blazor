@@ -1,0 +1,6 @@
+@import "blazor-base.css";
+@import "main-base.css";
+@import "button.css";
+@import "input.css";
+
+@import "pages/index.css";

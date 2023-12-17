@@ -1,0 +1,9 @@
+input:focus {
+    outline-color: var(--lightest-blue);
+}
+
+label {
+    font-size: 24px;
+    color: var(--white);
+    font-weight: 600;
+}

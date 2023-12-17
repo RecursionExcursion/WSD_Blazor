@@ -1,0 +1,46 @@
+@code {
+
+    DataManager dataManager = DataManager.Instance;
+
+
+    public void AddExeClick()
+    {
+        dataManager.AddExecutable("Name", "Path");
+        StateHasChanged();
+    }
+
+    public void DeleteExe(Executable exe)
+    {
+        dataManager.DeleteExecutable(exe);
+        StateHasChanged();
+    }
+
+    public void SaveExe(Executable exe)
+    {
+        dataManager.AddExecutable("", "");
+        dataManager.SyncData();
+        StateHasChanged();
+    }
+}
+
+
+<div>
+
+    <button class="btn-primary" @onclick="AddExeClick">Add Executable</button>
+
+    <div>
+        @foreach (var e in dataManager.State.Executables)
+        {
+            <div>
+                <label>Name:</label>
+                <input @bind:event="oninput" @bind=e.Name />
+                <label>Path:</label>
+                <input @bind:event="oninput" @bind=e.Path />
+                <button class="btn-primary" @onclick="() => DeleteExe(e)">Delete</button>
+            </div>
+        }
+    </div>
+    <button onclick="()=>SaveExe(e)">Save</button>
+
+
+</div>

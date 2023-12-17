@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebView.WindowsForms;
 using Microsoft.Extensions.DependencyInjection;
 using WSD_Blazor.Razor.Routing;
@@ -10,6 +9,7 @@ namespace WSD_Blazor
         public MainForm()
         {
             InitializeComponent();
+            InitializeForm();
 
 
             var services = new ServiceCollection();
@@ -22,9 +22,16 @@ namespace WSD_Blazor
                 Services = services.BuildServiceProvider()
             };
 
-
             blazorWebView.RootComponents.Add<AppRouter>("#app");
             this.Controls.Add(blazorWebView);
+        }
+
+        private void InitializeForm()
+        {
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.Width = 800;
+            this.Height = 500;
         }
     }
 }
