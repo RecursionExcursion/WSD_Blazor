@@ -73,7 +73,33 @@
         StateHasChanged();
         TogleExecutablesManager();
     }
+
+    private bool IsSelected(Executable exe, string selectedPath)
+    {
+
+        string decodedSelectedPath = WebUtility.UrlDecode(selectedPath);
+        bool b = exe.Path == decodedSelectedPath;
+
+        return b;
+    }
+    private string Selected(Executable exe, string selectedPath)
+    {
+        string decodedSelectedPath = WebUtility.UrlDecode(selectedPath);
+
+        if (String.Equals(exe.Path, WebUtility.UrlDecode(selectedPath)))
+        {
+            return "selected";
+        }
+        return "";
+    }
 }
+
+
+
+
+
+
+
 
 <div>
     <div class="divrow">
@@ -82,7 +108,7 @@
     </div>
 
     <!-- Executable UI -->
-    <div hidden="@(!ManageExePaths)">
+    <div class="white-boarder" hidden="@(!ManageExePaths)">
         <div>
 
             <button class="btn-primary" @onclick="AddExeClick">Add Executable</button>
@@ -100,13 +126,13 @@
                 }
             </div>
 
-            <button onclick="@SaveExe">Save</button>
+            <button @onclick="SaveExe">Save</button>
 
         </div>
     </div>
 
     <!-- Process UI -->
-    <div>
+    <div class="white-boarder">
 
         @foreach (var p in Params)
         {
@@ -135,12 +161,24 @@
 
                 <div>
 
+
                     <select hidden="@(!IsExe(p))" @bind=p.Exe>
                         @foreach (var exe in dataManager.State.Executables)
                         {
-                            <option value="@exe.Path">@exe.Name</option>
+
+                            if (IsSelected(exe, p.Exe))
+                            {
+                                <option value="@exe.Path" selected>@exe.Name</option>
+
+                            }
+                            else
+                            {
+                                <option value="@exe.Path">@exe.Name</option>
+                            }
+
                         }
                     </select>
+
 
                     <input hidden="@(IsExe(p))" @bind:event="oninput" @bind=p.Exe />
 

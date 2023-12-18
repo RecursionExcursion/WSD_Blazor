@@ -2,5 +2,6 @@
 @import "main-base.css";
 @import "button.css";
 @import "input.css";
+@import "border.css";
 
 @import "pages/index.css";
