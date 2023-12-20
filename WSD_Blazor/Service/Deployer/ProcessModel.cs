@@ -34,10 +34,4 @@
             public DeployableParams() {  }
         }
     }
-
-    public enum ProcessType
-    {
-        Exe,
-        Url
-    }
 }

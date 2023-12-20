@@ -1,4 +1,4 @@
-@page "/process/{modelJson}"
+@page "/process/{modelJson?}"
 
 @code {
     [Parameter]
@@ -12,14 +12,22 @@
 
     protected override void OnInitialized()
     {
-        Model = JsonSerializer.Deserialize<ProcessModel>(ModelJson) ?? throw new ArgumentNullException(nameof(Model));
-        if (!string.IsNullOrEmpty(Model.Name))
+        if (ModelJson != null)
         {
-            initialModelCopy = new()
-                {
-                    Name = Model.Name,
-                    DeployParametersList = Model.DeployParametersList
-                };
+            string? key = JsonSerializer.Deserialize<string>(ModelJson);
+            if (!string.IsNullOrEmpty(key))
+            {
+                Model = dataManager.State.ProcessModels[key];
+                initialModelCopy = new()
+                    {
+                        Name = Model.Name,
+                        DeployParametersList = Model.DeployParametersList
+                    };
+            }
+        }
+        else
+        {
+            Model = new();
         }
     }
 

@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Razor\Components\ExecutableManagment\" />
+    <Folder Include="Razor\Components\ExecutableManagmentView\" />
     <Folder Include="Razor\Components\ProcessCreationView\" />
   </ItemGroup>
 

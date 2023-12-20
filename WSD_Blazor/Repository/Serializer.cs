@@ -1,5 +1,5 @@
 ﻿using System.Text.Json;
-using WSD_Blazor.Repository;
+using WSD_Blazor.Repository.State;
 using WSD_Blazor.Service.Deployer;
 
 namespace WSD_Blazor.Data

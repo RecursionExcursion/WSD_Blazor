@@ -13,13 +13,21 @@
 
     private void EditClick(ProcessModel model) => SendModelToPage(model);
 
-    private void NewProcessClick() => SendModelToPage(new ProcessModel());
+    private void NewProcessClick() => SendModelToPage();
 
     private void SendModelToPage(ProcessModel model)
     {
-        string serializedModel = JsonSerializer.Serialize(model);
+        //Is this ths best way? Should I rethink the datamanagment. Use a map and pass keys? Why not?
+        //This would prevent me having to serialize an object into json
+        string serializedModel = JsonSerializer.Serialize(model.Name);
         string json = HttpUtility.UrlEncode(serializedModel);
         NavigationManager.NavigateTo($"/process/{json}");
+    }
+    private void SendModelToPage()
+    {
+        //Is this ths best way? Should I rethink the datamanagment. Use a map and pass keys? Why not?
+        //This would prevent me having to serialize an object into json
+        NavigationManager.NavigateTo($"/process");
     }
 }
 
