@@ -14,4 +14,9 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Razor\Components\ExecutableManagment\" />
+    <Folder Include="Razor\Components\ProcessCreationView\" />
+  </ItemGroup>
+
 </Project>

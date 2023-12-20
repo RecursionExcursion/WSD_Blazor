@@ -1,0 +1,18 @@
+.sidebyside {
+    display: flex;
+    flex: 1;
+
+    justify-content: center;
+    gap: 50px;
+}
+
+.vertContainer{
+    gap: 10px;
+}
+
+.divrow {
+    display: flex;
+    margin: 1rem auto;
+    justify-content: center;
+    gap: .7rem
+}

@@ -30,8 +30,8 @@ namespace WSD_Blazor
         {
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
-            this.Width = 800;
-            this.Height = 500;
+            this.Width = 1200;
+            this.Height = 800;
         }
     }
 }

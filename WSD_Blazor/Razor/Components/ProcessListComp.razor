@@ -1,6 +1,6 @@
 @code {
     [Parameter]
-    public ProcessModel? Model { get; set; }
+    public ProcessModel Model { get; set; }
 
     DataManager dataManager = DataManager.Instance;
 
@@ -92,8 +92,8 @@
         }
         return "";
     }
+    //TODO make select be pre filled
 }
-
 
 
 
@@ -106,90 +106,88 @@
         <button class="btn-primary" @onclick="TogleExecutablesManager">Manage Executables</button>
         <button class="btn-primary" @onclick="AddProcessClick">Add Process</button>
     </div>
+    <div class="sidebyside">
 
-    <!-- Executable UI -->
-    <div class="white-boarder" hidden="@(!ManageExePaths)">
-        <div>
-
-            <button class="btn-primary" @onclick="AddExeClick">Add Executable</button>
-
+        <!-- Executable UI -->
+        <div hidden="@(!ManageExePaths)">
+            <h2>Executables</h2>
             <div>
-                @foreach (var e in dataManager.State.Executables)
-                {
-                    <div>
-                        <label>Name:</label>
-                        <input @bind:event="oninput" @bind=e.Name />
-                        <label>Path:</label>
-                        <input @bind:event="oninput" @bind=e.Path />
-                        <button class="btn-primary" @onclick="() => DeleteExe(e)">Delete</button>
-                    </div>
-                }
+
+                <button class="btn-primary" @onclick="AddExeClick">Add Executable</button>
+
+                <div>
+                    @foreach (var e in dataManager.State.Executables)
+                    {
+                        <div>
+                            <label>Name:</label>
+                            <input @bind:event="oninput" @bind=e.Name />
+                            <label>Path:</label>
+                            <input @bind:event="oninput" @bind=e.Path />
+                            <button class="btn-primary" @onclick="() => DeleteExe(e)">Delete</button>
+                        </div>
+                    }
+                </div>
+
+                <button class="btn-primary" @onclick="SaveExe">Save</button>
+
             </div>
-
-            <button @onclick="SaveExe">Save</button>
-
         </div>
-    </div>
 
-    <!-- Process UI -->
-    <div class="white-boarder">
-
-        @foreach (var p in Params)
-        {
-            <div>
-                <div>
-                    <input type="radio" id="exe" name="radioOptions" checked="@IsExe(p)" @onchange="()=>SwitchType(p)" />
-                    <label for="option1">Exe</label>
-
-                    <input type="radio" id="url" name="radioOptions" checked="@IsUrl(p)" @onchange="()=>SwitchType(p)" />
-                    <label for="option2">Url</label>
-                </div>
-            </div>
-
-            <div class="divrow">
-
-                <label>
-                    @if (IsExe(p))
-                    {
-                        @ExeLabel
-                    }
-                    else
-                    {
-                        @UrlLabel
-                    }
-                </label>
-
-                <div>
+         <!-- Process UI -->
+         <div>
+             <h2>Processes</h2>
 
 
-                    <select hidden="@(!IsExe(p))" @bind=p.Exe>
-                        @foreach (var exe in dataManager.State.Executables)
-                        {
+             @foreach (var p in Params)
+             {
+                 <div>
 
-                            if (IsSelected(exe, p.Exe))
-                            {
-                                <option value="@exe.Path" selected>@exe.Name</option>
+                     <div>
+                         <input type="radio" id="exe" name="radioOptions" checked="@IsExe(p)" @onchange="()=>SwitchType(p)" />
+                         <label for="option1">Exe</label>
 
-                            }
-                            else
-                            {
-                                <option value="@exe.Path">@exe.Name</option>
-                            }
+                         <input type="radio" id="url" name="radioOptions" checked="@IsUrl(p)" @onchange="()=>SwitchType(p)" />
+                         <label for="option2">Url</label>
+                     </div>
 
-                        }
-                    </select>
+                     <div class="divrow">
 
+                         <div>
 
-                    <input hidden="@(IsExe(p))" @bind:event="oninput" @bind=p.Exe />
+                             <div hidden="@(!IsExe(p))">
+                                 <label>@ExeLabel</label>
+                                 <select @bind=p.Exe>
+                                     @foreach (var exe in dataManager.State.Executables)
+                                     {
 
-                </div>
+                                         if (IsSelected(exe, p.Exe))
+                                         {
+                                             <option value="@exe.Path" selected>@exe.Name</option>
 
-                <div hidden="@(!IsExe(p))" class="hide">
-                    <label>Args:</label> <input @bind=p.Args />
-                </div>
+                                         }
+                                         else
+                                         {
+                                             <option value="@exe.Path">@exe.Name</option>
+                                         }
+                                     }
+                                 </select>
 
-                <button class="btn-primary" @onclick="() => DeleteClick(p)">Delete</button>
-            </div>
-        }
+                                 <div>
+                                     <label>Args:</label> <input @bind=p.Args />
+                                 </div>
+
+                             </div>
+                             <div hidden="@(IsExe(p))">
+                                 <label>@UrlLabel</label>
+                                 <input @bind:event="oninput" @bind=p.Exe />
+                             </div>
+
+                         </div>
+
+                         <button class="btn-primary" @onclick="() => DeleteClick(p)">Delete</button>
+                     </div>
+                 </div>
+             }
+         </div>
     </div>
 </div>

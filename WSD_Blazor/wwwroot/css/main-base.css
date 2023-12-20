@@ -1,9 +1,4 @@
-.divrow {
-    display: flex;
-    margin: 20px auto;
-    justify-content: center;
-    gap: 10px
-}
+
 
 .centered-content {
     display: flex;
