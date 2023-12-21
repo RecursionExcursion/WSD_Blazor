@@ -4,6 +4,9 @@
     [Parameter]
     public string? KeyJson { get; set; }
 
+    [Inject]
+    private NavigationManager? NavigationManager { get; set; }
+
     private ProcessModel Model { get; set; }
     private DataManager dataManager = DataManager.Instance;
     private ProcessModel? initialModelCopy;
@@ -32,10 +35,7 @@
         }
     }
 
-    [Inject]
-    private NavigationManager? NavigationManager { get; set; }
     private void NavigateHome() => NavigationManager?.NavigateTo("/");
-
     private void BackClick() => NavigateHome();
 
     private void DeleteClick()
@@ -45,6 +45,11 @@
             dataManager.RemoveProcess(initialModelCopy);
             NavigateHome();
         }
+    }
+
+    private ProcessListDTO getDTO()
+    {
+        return new ProcessListDTO(Model, isNewModel, initalKey);
     }
 }
 
@@ -63,8 +68,7 @@
             <label>Name: </label><input @bind=Model.Name autocomplete="nope" />
         </div>
 
-        <ProcessListComp Model=Model IsNewModel=@isNewModel InitialKey=@initalKey/>
+        <ProcessListComp DTO=@getDTO()/>
 
-       
     </div>
 </div>

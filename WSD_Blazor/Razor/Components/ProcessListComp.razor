@@ -1,23 +1,12 @@
 @code {
     [Parameter]
-    public ProcessModel Model { get; set; }
+    public ProcessListDTO DTO { get; set; }
 
-    [Parameter]
-    public bool IsNewModel { get; set; }
-
-    [Parameter]
-    public string? InitialKey { get; set; }
-
-    private List<ProcessModel.DeployableParams>? Params { get; set; }
+    private List<ProcessModel.DeployableParam>? Params { get; set; }
 
     private bool ManageExePaths { get; set; } = false;
 
-    protected override void OnInitialized()
-    {
-        Params = Model.DeployParametersList;
-    }
-
-    private void TogleExecutablesManager()
+    private void ToggleExecutablesManager()
     {
         ManageExePaths = !ManageExePaths;
         StateHasChanged();
@@ -29,19 +18,19 @@
     }
 }
 
-
-
 <div>
     <div class="divrow">
-        <button class="btn-primary" @onclick="TogleExecutablesManager">@getButtonText()</button>
+        <button class="btn-primary" @onclick="ToggleExecutablesManager">@getButtonText()</button>
     </div>
     <div>
+
         <div hidden="@(!ManageExePaths)">
             <ExecutableManagerView />
         </div>
 
         <div hidden="@(ManageExePaths)">
-            <ProcessCreationView Params=@Params Model=Model IsNewModel=@IsNewModel InitialKey=@InitialKey />
+            <ProcessTableView DTO=@DTO />
         </div>
+
     </div>
 </div>

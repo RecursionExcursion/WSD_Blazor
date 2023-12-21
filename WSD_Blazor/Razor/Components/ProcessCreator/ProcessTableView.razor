@@ -1,0 +1,111 @@
+@code {
+
+
+    private List<ProcessModel.DeployableParam> Params;
+
+
+    [Parameter]
+    public ProcessListDTO DTO { get; set; }
+
+    [Inject]
+    private NavigationManager? NavigationManager { get; set; }
+    private void NavigateHome() => NavigationManager?.NavigateTo("/");
+
+    private DataManager dataManager = DataManager.Instance;
+
+    private ProcessModel Model { get; set; }
+    private bool IsNewModel { get; set; }
+    private string? InitialKey { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Model = DTO.Model;
+        IsNewModel = DTO.IsNewModel;
+        InitialKey = DTO.InitialKey;
+        Params = new(DTO.Model.DeployParametersList);
+    }
+
+    private void AddProcessClick()
+    {
+        var newParam = new ProcessModel.DeployableParam();
+        newParam.Type = ProcessType.Url;
+        Params.Add(newParam);
+    }
+
+    // private string Selected(Executable exe, string selectedPath)
+    // {
+    //     string decodedSelectedPath = WebUtility.UrlDecode(selectedPath);
+
+    //     if (String.Equals(exe.Path, WebUtility.UrlDecode(selectedPath)))
+    //     {
+    //         return "selected";
+    //     }
+    //     return "";
+    // }
+    // private void AddProcessClick() => Model.DeployParametersList.Add(new ProcessModel.DeployableParams());
+
+    private void SubmitClick()
+    {
+        if (!string.IsNullOrEmpty(Model.Name))
+        {
+            if (IsNewModel)
+            {
+                dataManager.AddNewProcess(Model);
+            }
+            else
+            {
+                Model.DeployParametersList = Params;
+                dataManager.UpdateProcess(
+                    InitialKey ?? throw new NullReferenceException("IsNewModel must be true if key is null")
+                , Model);
+            }
+            NavigateHome();
+        }
+    }
+
+    private ProcessCreationDTO getDTO(ProcessModel.DeployableParam dp)
+    {
+        return new ProcessCreationDTO(dp, Params);
+    }
+
+
+    private void HandleChildStateChangeCallBack()
+    {
+        StateHasChanged();
+    }
+
+    private void HandleCallBack()
+    {
+        
+    }
+
+    private void UpdateChangesMadeInChild(Object info)
+    {
+
+    }
+}
+
+
+
+
+
+
+
+
+
+<div>
+    <h2>Processes</h2>
+    <button class="btn-primary" @onclick="AddProcessClick">Add Process</button>
+
+    <ul>
+        @foreach (var p in Params)
+        {
+            <ProcessListItem DTO=@getDTO(p)
+                             NotifyParentOfStateChange=@HandleChildStateChangeCallBack
+                             UpdateChangesMade=@UpdateChangesMadeInChild />
+        }
+    </ul>
+    <div>
+        <button class="divrow btn-primary" @onclick="SubmitClick">Submit</button>
+    </div>
+</div>
