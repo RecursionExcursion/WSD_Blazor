@@ -4,5 +4,7 @@
 @import "input.css";
 @import "border.css";
 @import "div.css";
+@import "list.css";
+@import "label.css";
 
 @import "pages/index.css";

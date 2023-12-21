@@ -41,9 +41,11 @@
             @foreach (var p in processModels)
             {
                 <li>
-                    @p.Name
-                    <button class="btn-primary" @onclick="() => DeployClick(p)">Deploy</button>
-                    <button class="btn-primary" @onclick="() => EditClick(p)">Edit</button>
+                    <span>@p.Name</span>
+                    <span>
+                        <button class="btn-primary" @onclick="() => DeployClick(p)">Deploy</button>
+                        <button class="btn-primary" @onclick="() => EditClick(p)">Edit</button>
+                    </span>
                 </li>
             }
         </ul>

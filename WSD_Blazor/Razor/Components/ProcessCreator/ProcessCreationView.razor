@@ -1,0 +1,145 @@
+@code {
+
+    [Parameter]
+    public List<ProcessModel.DeployableParams>? Params { get; set; }
+
+    [Parameter]
+    public ProcessModel Model { get; set; }
+
+    [Parameter]
+    public bool IsNewModel { get; set; }
+
+    [Parameter]
+    public string? InitialKey { get; set; }
+
+    public string ExeLabel { get; } = "Exe:";
+    public string UrlLabel { get; } = "Url:";
+
+    private bool IsUrl(ProcessModel.DeployableParams p) => p.Type == ProcessType.Url;
+    private bool IsExe(ProcessModel.DeployableParams p) => p.Type == ProcessType.Exe;
+
+    private void SetUrl(ProcessModel.DeployableParams p) => p.Type = ProcessType.Url;
+    private void SetExe(ProcessModel.DeployableParams p) => p.Type = ProcessType.Exe;
+
+    DataManager dataManager = DataManager.Instance;
+
+
+    private void SwitchType(ProcessModel.DeployableParams p) => p.Type = p.Type == ProcessType.Exe ? ProcessType.Url : ProcessType.Exe;
+
+    private void AddProcessClick()
+    {
+
+        var newParam = new ProcessModel.DeployableParams();
+        newParam.Type = ProcessType.Url;
+        Params.Add(newParam);
+    }
+
+    private bool IsSelected(Executable exe, string selectedPath)
+    {
+
+        string decodedSelectedPath = WebUtility.UrlDecode(selectedPath);
+        bool b = exe.Path == decodedSelectedPath;
+
+        return b;
+    }
+
+    private string Selected(Executable exe, string selectedPath)
+    {
+        string decodedSelectedPath = WebUtility.UrlDecode(selectedPath);
+
+        if (String.Equals(exe.Path, WebUtility.UrlDecode(selectedPath)))
+        {
+            return "selected";
+        }
+        return "";
+    }
+
+    private void DeleteClick(ProcessModel.DeployableParams p)
+    {
+        Params.Remove(p);
+    }
+
+    [Inject]
+    private NavigationManager? NavigationManager { get; set; }
+    private void NavigateHome() => NavigationManager?.NavigateTo("/");
+
+    // private void AddProcessClick() => Model.DeployParametersList.Add(new ProcessModel.DeployableParams());
+
+
+    private void SubmitClick()
+    {
+        if (!string.IsNullOrEmpty(Model.Name))
+        {
+            if (IsNewModel)
+            {
+                dataManager.AddNewProcess(Model);
+            }
+            else
+            {
+                dataManager.UpdateProcess(
+                    InitialKey ?? throw new NullReferenceException("IsNewModel must be true if key is null")
+                , Model);
+            }
+            NavigateHome();
+        }
+    }
+}
+
+<div>
+    <h2>Processes</h2>
+    <button class="btn-primary" @onclick="AddProcessClick">Add Process</button>
+
+    <ul>
+
+        @foreach (var p in Params)
+        {
+            <li>
+
+                <span>
+                    <input type="radio" id="exe" name="radioOptions" checked="@IsExe(p)" @onchange="()=>SwitchType(p)" />
+                    <label for="option1">Exe</label>
+
+                    <input type="radio" id="url" name="radioOptions" checked="@IsUrl(p)" @onchange="()=>SwitchType(p)" />
+                    <label for="option2">Url</label>
+                </span>
+
+                <div class="divrow">
+
+                    <div hidden="@(!IsExe(p))">
+                        <label>@ExeLabel</label>
+                        <select @bind=p.Exe>
+                            @foreach (var exe in dataManager.State.Executables)
+                            {
+
+                                if (IsSelected(exe, p.Exe))
+                                {
+                                    <option value="@exe.Path" selected>@exe.Name</option>
+
+                                }
+                                else
+                                {
+                                    <option value="@exe.Path">@exe.Name</option>
+                                }
+                            }
+                        </select>
+
+                        <label>Args:</label> <input @bind=p.Args />
+
+                    </div>
+
+                    <div hidden="@(IsExe(p))">
+                        <label>@UrlLabel</label>
+                        <input @bind:event="oninput" @bind=p.Exe />
+                    </div>
+
+                </div>
+                <span>
+                    <button class="btn-primary" @onclick="() => DeleteClick(p)">Delete</button>
+                </span>
+            </li>
+        }
+    </ul>
+    <div>
+        <button class="divrow btn-primary" @onclick="SubmitClick">Submit</button>
+    </div>
+</div>

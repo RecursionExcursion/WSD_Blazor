@@ -8,51 +8,13 @@
     [Parameter]
     public string? InitialKey { get; set; }
 
-    DataManager dataManager = DataManager.Instance;
-
-
     private List<ProcessModel.DeployableParams>? Params { get; set; }
 
     private bool ManageExePaths { get; set; } = false;
 
-    public string ExeLabel { get; } = "Exe:";
-    public string UrlLabel { get; } = "Url:";
-
     protected override void OnInitialized()
     {
         Params = Model.DeployParametersList;
-    }
-
-    private void AddProcessClick()
-    {
-
-        var newParam = new ProcessModel.DeployableParams();
-        newParam.Type = ProcessType.Url;
-        Params.Add(newParam);
-    }
-
-    private void DeleteClick(ProcessModel.DeployableParams p)
-    {
-        Params.Remove(p);
-    }
-
-    private bool IsUrl(ProcessModel.DeployableParams p) => p.Type == ProcessType.Url;
-    private bool IsExe(ProcessModel.DeployableParams p) => p.Type == ProcessType.Exe;
-
-    private void SetUrl(ProcessModel.DeployableParams p) => p.Type = ProcessType.Url;
-    private void SetExe(ProcessModel.DeployableParams p) => p.Type = ProcessType.Exe;
-
-
-    private void SwitchType(ProcessModel.DeployableParams p) => p.Type = p.Type == ProcessType.Exe ? ProcessType.Url : ProcessType.Exe;
-
-
-    private bool IsExeURL(string exe)
-    {
-        if (string.IsNullOrEmpty(exe))
-        {
-            return false;
-        }
-        return Regex.IsMatch(exe, "^(http:|https:)");
     }
 
     private void TogleExecutablesManager()
@@ -61,177 +23,25 @@
         StateHasChanged();
     }
 
-    public void AddExeClick()
-    {
-        dataManager.AddExecutable("Name", "Path");
-        StateHasChanged();
-    }
-
-    public void DeleteExe(Executable exe)
-    {
-        dataManager.DeleteExecutable(exe);
-        StateHasChanged();
-    }
-
-    public void SaveExe()
-    {
-        dataManager.SyncData();
-        TogleExecutablesManager();
-    }
-
-    private bool IsSelected(Executable exe, string selectedPath)
-    {
-
-        string decodedSelectedPath = WebUtility.UrlDecode(selectedPath);
-        bool b = exe.Path == decodedSelectedPath;
-
-        return b;
-    }
-    private string Selected(Executable exe, string selectedPath)
-    {
-        string decodedSelectedPath = WebUtility.UrlDecode(selectedPath);
-
-        if (String.Equals(exe.Path, WebUtility.UrlDecode(selectedPath)))
-        {
-            return "selected";
-        }
-        return "";
-    }
-
     public string getButtonText()
     {
         return !ManageExePaths ? " Manage Executables" : "Create Proceses";
     }
-    //TODO make select be pre filled
-
-
-
-
-    [Inject]
-    private NavigationManager? NavigationManager { get; set; }
-    private void NavigateHome() => NavigationManager?.NavigateTo("/");
-
-    // private void AddProcessClick() => Model.DeployParametersList.Add(new ProcessModel.DeployableParams());
-
-
-    private void SubmitClick()
-    {
-        if (!string.IsNullOrEmpty(Model.Name))
-        {
-            if (IsNewModel)
-            {
-                dataManager.AddNewProcess(Model);
-            }
-            else
-            {
-                dataManager.UpdateProcess(
-                    InitialKey ?? throw new NullReferenceException("IsNewModel must be true if key is null")
-                , Model);
-            }
-            NavigateHome();
-        }
-    }
-
-
-
 }
-
-
-
-
 
 
 
 <div>
     <div class="divrow">
         <button class="btn-primary" @onclick="TogleExecutablesManager">@getButtonText()</button>
-        
     </div>
     <div>
-
-        <!-- Executable UI -->
         <div hidden="@(!ManageExePaths)">
-            <h2>Executables</h2>
-            <div>
-
-                <button class="btn-primary" @onclick="AddExeClick">Add Executable</button>
-
-                <div>
-                    @foreach (var e in dataManager.State.Executables)
-                    {
-                        <div>
-                            <label>Name:</label>
-                            <input @bind:event="oninput" @bind=e.Name />
-                            <label>Path:</label>
-                            <input @bind:event="oninput" @bind=e.Path />
-                            <button class="btn-primary" @onclick="() => DeleteExe(e)">Delete</button>
-                        </div>
-                    }
-                </div>
-
-                <button class="btn-primary" @onclick="SaveExe">Save</button>
-
-            </div>
+            <ExecutableManagerView />
         </div>
 
-        <!-- Process UI -->
         <div hidden="@(ManageExePaths)">
-            <h2>Processes</h2>
-            <button class="btn-primary" @onclick="AddProcessClick">Add Process</button>
-
-            @foreach (var p in Params)
-            {
-                <div>
-
-                    <div>
-                        <input type="radio" id="exe" name="radioOptions" checked="@IsExe(p)" @onchange="()=>SwitchType(p)" />
-                        <label for="option1">Exe</label>
-
-                        <input type="radio" id="url" name="radioOptions" checked="@IsUrl(p)" @onchange="()=>SwitchType(p)" />
-                        <label for="option2">Url</label>
-                    </div>
-
-                    <div class="divrow">
-
-                        <div>
-
-                            <div hidden="@(!IsExe(p))">
-                                <label>@ExeLabel</label>
-                                <select @bind=p.Exe>
-                                    @foreach (var exe in dataManager.State.Executables)
-                                    {
-
-                                        if (IsSelected(exe, p.Exe))
-                                        {
-                                            <option value="@exe.Path" selected>@exe.Name</option>
-
-                                        }
-                                        else
-                                        {
-                                            <option value="@exe.Path">@exe.Name</option>
-                                        }
-                                    }
-                                </select>
-
-                                <div>
-                                    <label>Args:</label> <input @bind=p.Args />
-                                </div>
-
-                            </div>
-                            <div hidden="@(IsExe(p))">
-                                <label>@UrlLabel</label>
-                                <input @bind:event="oninput" @bind=p.Exe />
-                            </div>
-
-                        </div>
-
-                        <button class="btn-primary" @onclick="() => DeleteClick(p)">Delete</button>
-                    </div>
-                </div>
-            }
-            <div>
-                <button class="divrow btn-primary" @onclick="SubmitClick">Submit</button>
-            </div>
+            <ProcessCreationView Params=@Params Model=Model IsNewModel=@IsNewModel InitialKey=@InitialKey />
         </div>
     </div>
 </div>
