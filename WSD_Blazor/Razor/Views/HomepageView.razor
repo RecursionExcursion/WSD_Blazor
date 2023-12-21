@@ -2,7 +2,7 @@
     [Inject]
     private NavigationManager? NavigationManager { get; set; }
 
-    List<ProcessModel> processModels = DataManager.Instance.State.ProcessModels.Values.ToList();
+    private List<ProcessModel> processModels = DataManager.Instance.State.ProcessModels.Values.ToList();
 
     private void DeployClick(ProcessModel process)
     {
@@ -19,6 +19,7 @@
         string json = HttpUtility.UrlEncode(serializedModel);
         NavigationManager?.NavigateTo($"/process/{json}");
     }
+
     private void SendModelToPage()
     {
         NavigationManager?.NavigateTo($"/process");

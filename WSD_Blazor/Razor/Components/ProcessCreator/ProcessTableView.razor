@@ -1,9 +1,4 @@
 @code {
-
-
-    private List<ProcessModel.DeployableParam> Params;
-
-
     [Parameter]
     public ProcessListDTO DTO { get; set; }
 
@@ -13,6 +8,7 @@
 
     private DataManager dataManager = DataManager.Instance;
 
+    private List<ProcessModel.DeployableParam> Params;
     private ProcessModel Model { get; set; }
     private bool IsNewModel { get; set; }
     private string? InitialKey { get; set; }
@@ -31,18 +27,6 @@
         newParam.Type = ProcessType.Url;
         Params.Add(newParam);
     }
-
-    // private string Selected(Executable exe, string selectedPath)
-    // {
-    //     string decodedSelectedPath = WebUtility.UrlDecode(selectedPath);
-
-    //     if (String.Equals(exe.Path, WebUtility.UrlDecode(selectedPath)))
-    //     {
-    //         return "selected";
-    //     }
-    //     return "";
-    // }
-    // private void AddProcessClick() => Model.DeployParametersList.Add(new ProcessModel.DeployableParams());
 
     private void SubmitClick()
     {
@@ -68,30 +52,11 @@
         return new ProcessCreationDTO(dp, Params);
     }
 
-
     private void HandleChildStateChangeCallBack()
     {
         StateHasChanged();
     }
-
-    private void HandleCallBack()
-    {
-        
-    }
-
-    private void UpdateChangesMadeInChild(Object info)
-    {
-
-    }
 }
-
-
-
-
-
-
-
-
 
 <div>
     <h2>Processes</h2>
@@ -101,8 +66,7 @@
         @foreach (var p in Params)
         {
             <ProcessListItem DTO=@getDTO(p)
-                             NotifyParentOfStateChange=@HandleChildStateChangeCallBack
-                             UpdateChangesMade=@UpdateChangesMadeInChild />
+                             NotifyParentOfStateChange=@HandleChildStateChangeCallBack />
         }
     </ul>
     <div>

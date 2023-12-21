@@ -5,11 +5,8 @@
     [Parameter]
     public EventCallback NotifyParentOfStateChange { get; set; }
 
-    [Parameter]
-    public EventCallback UpdateChangesMade { get; set; }
-
-    public ProcessModel.DeployableParam p { get; private set; }
-    public List<ProcessModel.DeployableParam>? Params { get; private set; }
+    private ProcessModel.DeployableParam p { get; set; }
+    private List<ProcessModel.DeployableParam>? Params { get; set; }
 
     protected override void OnInitialized()
     {
@@ -17,14 +14,13 @@
         Params = DTO.Params;
     }
 
-    DataManager dataManager = DataManager.Instance;
+    private DataManager dataManager = DataManager.Instance;
 
-    public string ExeLabel { get; } = "Exe:";
-    public string UrlLabel { get; } = "Url:";
+    private string ExeLabel { get; } = "Exe:";
+    private string UrlLabel { get; } = "Url:";
 
     private bool IsUrl(ProcessModel.DeployableParam p) => p.Type == ProcessType.Url;
     private bool IsExe(ProcessModel.DeployableParam p) => p.Type == ProcessType.Exe;
-
     private void SwitchType(ProcessModel.DeployableParam p) => p.Type = p.Type == ProcessType.Exe ? ProcessType.Url : ProcessType.Exe;
 
     private bool IsSelected(Executable exe, string selectedPath)
