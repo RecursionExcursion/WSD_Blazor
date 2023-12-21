@@ -1,4 +1,5 @@
-﻿using WSD_Blazor.Data;
+﻿using System.Reflection;
+using WSD_Blazor.Data;
 using WSD_Blazor.Repository.State;
 using WSD_Blazor.Service.Deployer;
 
@@ -8,7 +9,7 @@ namespace WSD_Blazor.Repository
     {
         private static readonly Serializer serializer = Serializer.Instance;
 
-        private static readonly Lazy<DataManager> lazyInstance = new Lazy<DataManager>(() => new DataManager());
+        private static readonly Lazy<DataManager> lazyInstance = new(() => new DataManager());
 
         public static DataManager Instance => lazyInstance.Value;
 
@@ -44,11 +45,11 @@ namespace WSD_Blazor.Repository
             SyncData();
         }
 
-        public void UpdateProcess(ProcessModel initalModel, ProcessModel newModel)
+        public void UpdateProcess(string intialKey, ProcessModel newModel)
         {
-            if (!string.Equals(initalModel.Name, newModel.Name))
+            if (!string.Equals(intialKey, newModel.Name))
             {
-                RemoveProcess(initalModel);
+                State.ProcessModels.Remove(intialKey);
             }
             State.ProcessModels[newModel.Name] = newModel;
             SyncData();

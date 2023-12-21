@@ -1,58 +1,40 @@
-@page "/process/{modelJson?}"
+@page "/process/{keyJson?}"
 
 @code {
     [Parameter]
-    public string? ModelJson { get; set; }
+    public string? KeyJson { get; set; }
 
     private ProcessModel Model { get; set; }
-
     private DataManager dataManager = DataManager.Instance;
-
     private ProcessModel? initialModelCopy;
+
+    private bool isNewModel = false;
+    private string? initalKey;
 
     protected override void OnInitialized()
     {
-        if (ModelJson != null)
+        if (KeyJson != null)
         {
-            string? key = JsonSerializer.Deserialize<string>(ModelJson);
-            if (!string.IsNullOrEmpty(key))
-            {
-                Model = dataManager.State.ProcessModels[key];
-                initialModelCopy = new()
-                    {
-                        Name = Model.Name,
-                        DeployParametersList = Model.DeployParametersList
-                    };
-            }
+            string? key = JsonSerializer.Deserialize<string>(KeyJson);
+            initalKey = key;
+
+            Model = dataManager.State.ProcessModels[key ?? throw new ArgumentNullException()];
+            initialModelCopy = new()
+                {
+                    Name = Model.Name,
+                    DeployParametersList = Model.DeployParametersList
+                };
         }
         else
         {
             Model = new();
+            isNewModel = true;
         }
     }
 
     [Inject]
     private NavigationManager? NavigationManager { get; set; }
     private void NavigateHome() => NavigationManager?.NavigateTo("/");
-
-    private void AddProcessClick() => Model.DeployParametersList.Add(new ProcessModel.DeployableParams());
-
-
-    private void SubmitClick()
-    {
-        if (!string.IsNullOrEmpty(Model.Name))
-        {
-            if (initialModelCopy == null)
-            {
-                dataManager.AddNewProcess(Model);
-            }
-            else
-            {
-                dataManager.UpdateProcess(initialModelCopy, Model);
-            }
-            NavigateHome();
-        }
-    }
 
     private void BackClick() => NavigateHome();
 
@@ -81,10 +63,8 @@
             <label>Name: </label><input @bind=Model.Name autocomplete="nope" />
         </div>
 
-        <ProcessListComp Model=Model />
+        <ProcessListComp Model=Model IsNewModel=@isNewModel InitialKey=@initalKey/>
 
-        <div>
-            <button class="divrow btn-primary" @onclick="SubmitClick">Submit</button>
-        </div>
+       
     </div>
 </div>
