@@ -5,6 +5,7 @@ button {
     min-width: 10rem;
     height: fit-content;
     border: .1rem solid var(--lightest);
+    box-shadow: 2px 2px 5px var(--white);
 }
 
 button:hover {

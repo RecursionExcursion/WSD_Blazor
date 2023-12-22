@@ -1,11 +1,11 @@
-@import "blazor-base.css";
-@import "main-base.css";
-@import "button.css";
-@import "input.css";
-@import "border.css";
-@import "div.css";
-@import "list.css";
-@import "table.css";
-@import "text.css";
+@import "base/blazor-base.css";
+@import "base/main-base.css";
+@import "tags/button.css";
+@import "tags/input.css";
+@import "tags/border.css";
+@import "tags/div.css";
+@import "tags/list.css";
+@import "tags/table.css";
+@import "tags/text.css";
 
 @import "pages/index.css";

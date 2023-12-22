@@ -42,22 +42,16 @@ td {
     border: .1rem solid var(--textcolor);
     padding: 10px;
     text-align: center;
-    height: 80vh;
     margin: 0 auto;
     overflow-y: auto;
     overflow-x: auto;
+    box-shadow: 2px 2px 5px var(--white);
 }
 
-.tableContainer2 {
-    display: flex;
-    width: 90vw;
-    background-color: var(--darkest);
-    border: .1rem solid var(--textcolor);
-    padding: 10px;
-    text-align: center;
-    color: var(--textcolor);
+.homeTableContainer {
+    max-height: 80vh;
+}
+
+.processTableContainer {
     max-height: 50vh;
-    margin: 0 auto;
-    overflow-y: auto;
-    overflow-x: auto;
 }
