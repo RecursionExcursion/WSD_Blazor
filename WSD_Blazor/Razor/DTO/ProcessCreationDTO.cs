@@ -3,7 +3,7 @@
 namespace WSD_Blazor.Razor.DTO
 {
     public record ProcessCreationDTO(
-        ProcessModel.DeployableParam DeployableParam,
-        List<ProcessModel.DeployableParam>? Params
+        DeployableProcesses.DeployableParams DeployableParam,
+        List<DeployableProcesses.DeployableParams>? Params
         );
 }

@@ -8,8 +8,8 @@
 
     private DataManager dataManager = DataManager.Instance;
 
-    private List<ProcessModel.DeployableParam> Params;
-    private ProcessModel Model { get; set; }
+    private List<DeployableProcesses.DeployableParams> Params;
+    private DeployableProcesses Model { get; set; }
     private bool IsNewModel { get; set; }
     private string? InitialKey { get; set; }
 
@@ -23,7 +23,7 @@
 
     private void AddProcessClick()
     {
-        var newParam = new ProcessModel.DeployableParam();
+        var newParam = new DeployableProcesses.DeployableParams();
         newParam.Type = ProcessType.Url;
         Params.Add(newParam);
     }
@@ -47,7 +47,7 @@
         }
     }
 
-    private ProcessCreationDTO getDTO(ProcessModel.DeployableParam dp)
+    private ProcessCreationDTO getDTO(DeployableProcesses.DeployableParams dp)
     {
         return new ProcessCreationDTO(dp, Params);
     }

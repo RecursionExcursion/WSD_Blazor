@@ -17,7 +17,7 @@ namespace WSD_Blazor.Repository
 
         private DataManager() { }
 
-        public void AddNewProcess(ProcessModel model)
+        public void AddNewProcess(DeployableProcesses model)
         {
             if (State.ProcessModels.TryAdd(model.Name, model))
             {
@@ -25,9 +25,9 @@ namespace WSD_Blazor.Repository
             }
         }
 
-        public ProcessModel GetProcessByName(string name) => State.ProcessModels[name];
+        public DeployableProcesses GetProcessByName(string name) => State.ProcessModels[name];
 
-        public void RemoveProcess(ProcessModel model)
+        public void RemoveProcess(DeployableProcesses model)
         {
             if (model != null)
             {
@@ -36,7 +36,7 @@ namespace WSD_Blazor.Repository
             }
         }
 
-        public void UpdateProcess(ProcessModel model)
+        public void UpdateProcess(DeployableProcesses model)
         {
             if (State.ProcessModels.ContainsKey(model.Name))
             {
@@ -45,7 +45,7 @@ namespace WSD_Blazor.Repository
             SyncData();
         }
 
-        public void UpdateProcess(string intialKey, ProcessModel newModel)
+        public void UpdateProcess(string intialKey, DeployableProcesses newModel)
         {
             if (!string.Equals(intialKey, newModel.Name))
             {

@@ -2,7 +2,7 @@
     [Parameter]
     public ProcessListDTO DTO { get; set; }
 
-    private List<ProcessModel.DeployableParam>? Params { get; set; }
+    private List<DeployableProcesses.DeployableParams>? Params { get; set; }
 
     private bool ManageExePaths { get; set; } = false;
 
@@ -16,6 +16,12 @@
     {
         return !ManageExePaths ? " Manage Executables" : "Create Proceses";
     }
+
+    private void HandleChildSaveButtonClick()
+    {
+        ToggleExecutablesManager();
+    }
+    //TODO Handle Exceptions when user fucks up the args and url etc.
 }
 
 <div>
@@ -25,7 +31,7 @@
     <div>
 
         <div hidden="@(!ManageExePaths)">
-            <ExecutableManagerView />
+            <ExecutableManagerView SaveClickCallback=HandleChildSaveButtonClick />
         </div>
 
         <div hidden="@(ManageExePaths)">

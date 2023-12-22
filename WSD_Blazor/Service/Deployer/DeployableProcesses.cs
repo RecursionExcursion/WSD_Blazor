@@ -1,37 +1,37 @@
 ﻿namespace WSD_Blazor.Service.Deployer
 {
-    public class ProcessModel
+    public class DeployableProcesses
     {
         public string Name { get; set; }
 
-        public List<DeployableParam> DeployParametersList { get; set; }
+        public List<DeployableParams> DeployParametersList { get; set; }
 
 
-        public ProcessModel(string name, List<DeployableParam> deployParametersList)
+        public DeployableProcesses(string name, List<DeployableParams> deployParametersList)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             DeployParametersList = deployParametersList ?? throw new ArgumentNullException(nameof(deployParametersList));
         }
 
-        public ProcessModel()
+        public DeployableProcesses()
         {
-            DeployParametersList = new List<DeployableParam>();
+            DeployParametersList = new List<DeployableParams>();
             Name = "";
         }
 
-        public class DeployableParam
+        public class DeployableParams
         {
             public string Exe { get; set; } = "";
             public string? Args { get; set; }
             public ProcessType Type { get; set; }
 
-            public DeployableParam(string exe, string? args)
+            public DeployableParams(string exe, string? args)
             {
                 Exe = exe ?? throw new ArgumentNullException(nameof(exe));
                 Args = args;
             }
 
-            public DeployableParam() {  }
+            public DeployableParams() {  }
         }
     }
 }

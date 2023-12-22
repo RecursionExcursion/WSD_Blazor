@@ -5,8 +5,8 @@
     [Parameter]
     public EventCallback NotifyParentOfStateChange { get; set; }
 
-    private ProcessModel.DeployableParam p { get; set; }
-    private List<ProcessModel.DeployableParam>? Params { get; set; }
+    private DeployableProcesses.DeployableParams p { get; set; }
+    private List<DeployableProcesses.DeployableParams>? Params { get; set; }
 
     protected override void OnInitialized()
     {
@@ -19,9 +19,9 @@
     private string ExeLabel { get; } = "Exe:";
     private string UrlLabel { get; } = "Url:";
 
-    private bool IsUrl(ProcessModel.DeployableParam p) => p.Type == ProcessType.Url;
-    private bool IsExe(ProcessModel.DeployableParam p) => p.Type == ProcessType.Exe;
-    private void SwitchType(ProcessModel.DeployableParam p) => p.Type = p.Type == ProcessType.Exe ? ProcessType.Url : ProcessType.Exe;
+    private bool IsUrl(DeployableProcesses.DeployableParams p) => p.Type == ProcessType.Url;
+    private bool IsExe(DeployableProcesses.DeployableParams p) => p.Type == ProcessType.Exe;
+    private void SwitchType(DeployableProcesses.DeployableParams p) => p.Type = p.Type == ProcessType.Exe ? ProcessType.Url : ProcessType.Exe;
 
     private bool IsSelected(Executable exe, string selectedPath)
     {
@@ -30,11 +30,17 @@
         return b;
     }
 
-    private void DeleteClick(ProcessModel.DeployableParam p)
+    private void DeleteClick(DeployableProcesses.DeployableParams p)
     {
         Params.Remove(p);
         NotifyParentOfStateChange.InvokeAsync();
         StateHasChanged();
+    }
+
+    public void TestClick(DeployableProcesses.DeployableParams p)
+    {
+        DeployableProcesses dp = new("Test", new List<DeployableProcesses.DeployableParams> { p });
+        ProcessManager.ExecuteProcesses(dp);
     }
 
     private string getRadioName()
@@ -85,6 +91,7 @@
 
     </div>
     <span>
+        <button class="btn-primary" @onclick="() => TestClick(p)">Test</button>
         <button class="btn-primary" @onclick="() => DeleteClick(p)">Delete</button>
     </span>
 </li>

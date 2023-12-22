@@ -1,4 +1,7 @@
 @code {
+    [Parameter]
+    public EventCallback SaveClickCallback { get; set; }
+
     DataManager dataManager = DataManager.Instance;
 
     public void AddExeClick()
@@ -16,7 +19,7 @@
     public void SaveExe()
     {
         dataManager.SyncData();
-        // TogleExecutablesManager();
+        SaveClickCallback.InvokeAsync();
     }
 }
 

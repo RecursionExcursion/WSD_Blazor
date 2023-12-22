@@ -2,18 +2,18 @@
     [Inject]
     private NavigationManager? NavigationManager { get; set; }
 
-    private List<ProcessModel> processModels = DataManager.Instance.State.ProcessModels.Values.ToList();
+    private List<DeployableProcesses> processModels = DataManager.Instance.State.ProcessModels.Values.ToList();
 
-    private void DeployClick(ProcessModel process)
+    private void DeployClick(DeployableProcesses process)
     {
         ProcessManager.ExecuteProcesses(process);
     }
 
-    private void EditClick(ProcessModel model) => SendModelToPage(model);
+    private void EditClick(DeployableProcesses model) => SendModelToPage(model);
 
     private void NewProcessClick() => SendModelToPage();
 
-    private void SendModelToPage(ProcessModel model)
+    private void SendModelToPage(DeployableProcesses model)
     {
         string serializedModel = JsonSerializer.Serialize(model.Name);
         string json = HttpUtility.UrlEncode(serializedModel);
