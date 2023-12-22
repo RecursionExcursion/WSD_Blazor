@@ -23,28 +23,33 @@
     }
 }
 
-<div>
-    <h2>Executables</h2>
-    <button class="btn-primary" @onclick="AddExeClick">Add Executable</button>
-
-    <div>
-        <ul>
-            @foreach (var e in dataManager.State.Executables)
-            {
-                <li>
-                    <span>
-                        <label>Name:</label>
-                        <input @bind:event="oninput" @bind=e.Name />
-                    </span>
-                    <span>
-                        <label>Path:</label>
-                        <input @bind:event="oninput" @bind=e.Path />
-                    </span>
-                    <button class="btn-primary" @onclick="() => DeleteExe(e)">Delete</button>
-                </li>
-            }
-        </ul>
+<div class="centered-content">
+    <div class="outerDiv">
+        <h2 class="subtitle">Executables</h2>
+        <button class="btn-primary" @onclick="AddExeClick">Add Executable</button>
+        <div class="tableContainer2">
+            <table>
+                <thead> </thead>
+                <tbody>
+                    @foreach (var e in dataManager.State.Executables)
+                    {
+                        <tr>
+                            <td>
+                                <label>Name:</label>
+                                <input @bind:event="oninput" @bind=e.Name />
+                            </td>
+                            <td>
+                                <label>Path:</label>
+                                <input @bind:event="oninput" @bind=e.Path />
+                            </td>
+                            <td>
+                                <button class="btn-primary" @onclick="() => DeleteExe(e)">Delete</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <button class="btn-primary" @onclick="SaveExe">Save</button>
     </div>
-
-    <button class="btn-primary" @onclick="SaveExe">Save</button>
 </div>

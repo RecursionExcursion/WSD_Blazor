@@ -1,5 +1,5 @@
 ul, ol {
-    background-color: var(--medium-blue);
+    background-color: var(--medium);
 
     list-style: none;
 
@@ -10,15 +10,15 @@ ul, ol {
     border: 1px solid #ccc;
     border-radius: 5px;
 
-    min-width: 40rem;
-    max-width: 60rem;
+    width: 90vw;
+   
     max-height: 15rem;
 
     overflow-y: auto;
 }
 
 li {
-    background-color: var(--lightest-blue);
+    background-color: var(--lightest);
    
     display: flex;
     flex-direction: row;
@@ -41,4 +41,10 @@ li span {
 
 .listborder button {
     min-width: 5rem;
+}
+
+
+
+.spanGap{
+    gap: 1.7rem;
 }

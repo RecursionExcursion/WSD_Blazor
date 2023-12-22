@@ -1,7 +1,7 @@
 .base {
     justify-content: center;
     align-items: center;
-    background-color: var(--darkest-blue);
+    background-color: var(--dark);
     height: 100vh;
     padding: 2rem
 }
@@ -15,11 +15,12 @@ body {
 }
 
 :root {
-    --darkest-blue: #293133;
-    --dark-blue: #2E474C;
-    --medium-blue: #337380;
-    --light-blue: #249BB3;
-    --lightest-blue: #00BEE6;
+    --darkest: #1A1A1A;
+    --dark: #2D2D30;
+    --medium: #252525;
+    --light: #7c7e80;
+    --lightest: #c6c9cc;
     --yellow: #F9D53E;
     --white: #FFFFFF;
+    --textcolor: #AFB1B3;
 }

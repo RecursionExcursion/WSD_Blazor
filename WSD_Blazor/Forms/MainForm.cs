@@ -28,10 +28,14 @@ namespace WSD_Blazor
 
         private void InitializeForm()
         {
-            //this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            //this.MaximizeBox = false;
-            this.Width = 1200;
-            this.Height = 800;
+            this.Width = 1000;
+            this.Height = 750;
+        }
+
+        private void DisableWindowResizing()
+        {
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
         }
     }
 }

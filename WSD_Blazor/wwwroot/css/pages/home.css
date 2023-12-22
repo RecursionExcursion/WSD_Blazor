@@ -5,10 +5,10 @@
     .home-page-wrapper > .header {
         font-size: 2.7rem;
         font-weight: 600;
-        color: var(--white);
+        color: var(--textcolor);
     }
 
-.outerTableDiv {
+.outerDiv {
     display: flex;
     flex-direction: column;
     text-align: center;
@@ -16,25 +16,4 @@
     align-content: center;
     justify-content: center;
     gap: 1rem;
-}
-
-.homeTableContainer {
-    display: flex;
-    width: 80vw;
-
-   
-
-    background-color: var(--white);
-    border: .2rem solid var(--lightest-blue);
-    padding: 10px;
-    text-align: center
-        ;
-    height: 60vh;
-
-    margin: 0 auto;
- 
-
-    max-height: 30rem;
-    overflow-y: auto;
-    overflow-x: auto;
 }

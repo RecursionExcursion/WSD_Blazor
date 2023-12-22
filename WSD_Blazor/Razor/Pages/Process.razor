@@ -62,13 +62,6 @@
         }
     </div>
 
-    <div class="centered-content">
+    <ProcessListComp DTO=@getDTO() />
 
-        <div class="divrow">
-            <label>Name: </label><input @bind=Model.Name autocomplete="nope" />
-        </div>
-
-        <ProcessListComp DTO=@getDTO()/>
-
-    </div>
 </div>

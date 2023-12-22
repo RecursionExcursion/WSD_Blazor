@@ -4,6 +4,7 @@ button {
     border-radius: .2rem;
     min-width: 10rem;
     height: fit-content;
+    border: .1rem solid var(--lightest);
 }
 
 button:hover {
@@ -11,18 +12,18 @@ button:hover {
 }
 
 button:focus-visible{
-    outline-color:var(--lightest-blue);
+    outline-color:var(--lightest);
 }
 
 .btn-primary {
-    background-color: var(--medium-blue);
-    color: var(--white);
+    background-color: var(--darkest);
+    color: var(--textcolor);
     border-color: var(--white);
     margin: auto
 }
 
 .btn-primary:hover {
-    background-color: var(--dark-blue);
-    color: var(--white);
-    border-color: var(--lightest-blue);    
+    background-color: var(--medium);
+    color: var(--textcolor);
+    border-color: var(--white);
 }
