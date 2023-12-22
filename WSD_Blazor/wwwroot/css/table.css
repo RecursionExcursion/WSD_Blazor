@@ -1,0 +1,30 @@
+table {
+    width: 100%;
+}
+
+    table button {
+        width: 8rem;
+        color: var(--lightest-blue);
+    }
+
+    table span {
+        align-content: space-evenly;
+        gap: 10px;
+    }
+
+th, tr, td {
+    border: .2rem solid var(--darkest-blue);
+}
+
+th {
+    background-color: var(--light-blue);
+}
+
+tr {
+}
+
+td {
+    width: 30vw;
+    background-color: var(--light-blue);
+    padding: .4rem;
+}

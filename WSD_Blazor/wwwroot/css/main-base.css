@@ -1,22 +1,9 @@
-.centered-content {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    height: 100%;
-    width: 100%;
-    align-content: center;
-    justify-content: center;
-}
-
-.main {
+.base {
     justify-content: center;
     align-items: center;
     background-color: var(--darkest-blue);
     height: 100vh;
-}
-
-.buffer {
-    margin: 20px auto;
+    padding: 2rem
 }
 
 html,
@@ -24,6 +11,7 @@ body {
     height: 100%;
     margin: 0;
     padding: 0;
+    overflow: hidden;
 }
 
 :root {

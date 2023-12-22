@@ -10,7 +10,7 @@ ul, ol {
     border: 1px solid #ccc;
     border-radius: 5px;
 
-    min-width: 25rem;
+    min-width: 40rem;
     max-width: 60rem;
     max-height: 15rem;
 
@@ -37,9 +37,7 @@ li span {
     gap: 1rem;
 }
 
-.listborder {
-    display: flex;
-}
+
 
 .listborder button {
     min-width: 5rem;

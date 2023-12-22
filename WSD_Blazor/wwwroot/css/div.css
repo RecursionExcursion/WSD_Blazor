@@ -16,3 +16,13 @@
     justify-content: center;
     gap: .7rem
 }
+
+.centered-content {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    align-content: center;
+    justify-content: center;
+}

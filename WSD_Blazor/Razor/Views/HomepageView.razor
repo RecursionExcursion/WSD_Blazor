@@ -2,6 +2,8 @@
     [Inject]
     private NavigationManager? NavigationManager { get; set; }
 
+    private string Title = "Deployables";
+
     private List<DeployableProcesses> processModels = DataManager.Instance.State.ProcessModels.Values.ToList();
 
     private void DeployClick(DeployableProcesses process)
@@ -26,23 +28,38 @@
     }
 }
 
-<div class="home-page-wrapper centered-content">
-    <h1 class="header">Processes</h1>
-    <div class="buffer">
-        <button @onclick="NewProcessClick" class="btn-primary">New Process</button>
+<div>
+    <div class="home-page-wrapper centered-content">
+        <h1 class="header">@Title</h1>
     </div>
-    <div class="listborder">
-        <ul>
-            @foreach (var p in processModels)
-            {
-                <li>
-                    <span>@p.Name</span>
-                    <span>
-                        <button class="btn-primary" @onclick="() => DeployClick(p)">Deploy</button>
-                        <button class="btn-primary" @onclick="() => EditClick(p)">Edit</button>
-                    </span>
-                </li>
-            }
-        </ul>
+    <div class="outerTableDiv">
+
+        <button @onclick="NewProcessClick" class="btn-primary">New Process</button>
+        <div class="homeTableContainer">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in processModels)
+                    {
+                        <tr>
+                            <td>
+                                <span>@p.Name</span>
+                            </td>
+                            <td>
+                                <span>
+                                    <button class="btn-primary" @onclick="() => DeployClick(p)">Deploy</button>
+                                    <button class="btn-primary" @onclick="() => EditClick(p)">Edit</button>
+                                </span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

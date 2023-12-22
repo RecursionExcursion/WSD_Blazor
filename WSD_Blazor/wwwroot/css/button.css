@@ -1,8 +1,8 @@
 button {
     padding: .5rem;
     font-weight: 600;
-    border-radius: 5px;
-    min-width: 150px;
+    border-radius: .2rem;
+    min-width: 10rem;
     height: fit-content;
 }
 
@@ -17,7 +17,8 @@ button:focus-visible{
 .btn-primary {
     background-color: var(--medium-blue);
     color: var(--white);
-    border-color: var(--white)
+    border-color: var(--white);
+    margin: auto
 }
 
 .btn-primary:hover {
