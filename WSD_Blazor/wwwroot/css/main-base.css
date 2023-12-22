@@ -1,34 +1,26 @@
-/* TODO - Move to css */
-
-.divrow {
-    display: flex
-}
-
-.centered-content {
-    display: flex;
-    border: 1px solid red;
-    flex-direction: column;
-    text-align: center; /* Center horizontally */
-    /* Optional: Set a height to center within the viewport */
-}
-
-
-.main {
-    justify-content: center; /* Center horizontally */
+.base {
+    justify-content: center;
     align-items: center;
+    background-color: var(--dark);
+    height: 100vh;
+    padding: 2rem
 }
 
-ul {
-    margin: 20px auto;
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
 }
 
-li {
-    width: fit-content;
-}
-
-
-
-/*TODO For Testing only Remove*/
-div {
-    border: 1px solid black; /* 1px solid border with black color */
+:root {
+    --darkest: #1A1A1A;
+    --dark: #2D2D30;
+    --medium: #252525;
+    --light: #7c7e80;
+    --lightest: #c6c9cc;
+    --yellow: #F9D53E;
+    --white: #FFFFFF;
+    --textcolor: #AFB1B3;
 }

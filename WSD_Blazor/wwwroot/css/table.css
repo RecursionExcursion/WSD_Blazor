@@ -1,0 +1,63 @@
+table {
+    width: 100%;
+    color: var(--textcolor);
+}
+
+    table button {
+        width: 8rem;
+        color: var(--lightest);
+    }
+
+    table span {
+        align-content: space-evenly;
+        gap: 10px;
+    }
+
+th {
+    background-color: var(--darkest);
+    font: var(--textcolor);
+    border: .001rem solid var(--textcolor);
+}
+
+tr {
+}
+
+    tr:nth-child(even) {
+        background-color: var(--medium);
+    }
+
+    tr:nth-child(odd) {
+        background-color: var(--darkest);
+    }
+
+td {
+  
+    padding: .4rem;
+}
+
+.tableContainer {
+    display: flex;
+    width: 90vw;
+    background-color: var(--darkest);
+    border: .1rem solid var(--textcolor);
+    padding: 10px;
+    text-align: center;
+    height: 80vh;
+    margin: 0 auto;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+.tableContainer2 {
+    display: flex;
+    width: 90vw;
+    background-color: var(--darkest);
+    border: .1rem solid var(--textcolor);
+    padding: 10px;
+    text-align: center;
+    color: var(--textcolor);
+    max-height: 50vh;
+    margin: 0 auto;
+    overflow-y: auto;
+    overflow-x: auto;
+}

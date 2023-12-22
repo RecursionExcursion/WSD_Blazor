@@ -1,0 +1,55 @@
+@code {
+    [Parameter]
+    public EventCallback SaveClickCallback { get; set; }
+
+    DataManager dataManager = DataManager.Instance;
+
+    public void AddExeClick()
+    {
+        dataManager.AddExecutable("Name", "Path");
+        StateHasChanged();
+    }
+
+    public void DeleteExe(Executable exe)
+    {
+        dataManager.DeleteExecutable(exe);
+        StateHasChanged();
+    }
+
+    public void SaveExe()
+    {
+        dataManager.SyncData();
+        SaveClickCallback.InvokeAsync();
+    }
+}
+
+<div class="centered-content">
+    <div class="outerDiv">
+        <h2 class="subtitle">Executables</h2>
+        <button class="btn-primary" @onclick="AddExeClick">Add Executable</button>
+        <div class="tableContainer2">
+            <table>
+                <thead> </thead>
+                <tbody>
+                    @foreach (var e in dataManager.State.Executables)
+                    {
+                        <tr>
+                            <td>
+                                <label>Name:</label>
+                                <input @bind:event="oninput" @bind=e.Name />
+                            </td>
+                            <td>
+                                <label>Path:</label>
+                                <input @bind:event="oninput" @bind=e.Path />
+                            </td>
+                            <td>
+                                <button class="btn-primary" @onclick="() => DeleteExe(e)">Delete</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <button class="btn-primary" @onclick="SaveExe">Save</button>
+    </div>
+</div>

@@ -1,0 +1,62 @@
+@code {
+    [Inject]
+    private NavigationManager? NavigationManager { get; set; }
+
+    private string Title = "Deployables";
+
+    private List<DeployableProcesses> processModels = DataManager.Instance.State.ProcessModels.Values.ToList();
+
+    private void DeployClick(DeployableProcesses process)
+    {
+        ProcessManager.ExecuteProcesses(process);
+    }
+
+    private void EditClick(DeployableProcesses model) => SendModelToPage(model);
+
+    private void NewProcessClick() => SendModelToPage();
+
+    private void SendModelToPage(DeployableProcesses model)
+    {
+        string serializedModel = JsonSerializer.Serialize(model.Name);
+        string json = HttpUtility.UrlEncode(serializedModel);
+        NavigationManager?.NavigateTo($"/process/{json}");
+    }
+
+    private void SendModelToPage()
+    {
+        NavigationManager?.NavigateTo($"/process");
+    }
+}
+
+<div>
+    <div class="outerDiv">
+
+        <button @onclick="NewProcessClick" class="btn-primary">New Process</button>
+        <div class="tableContainer">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in processModels)
+                    {
+                        <tr>
+                            <td>
+                                <span>@p.Name</span>
+                            </td>
+                            <td>
+                                <span>
+                                    <button class="btn-primary" @onclick="() => DeployClick(p)">Deploy</button>
+                                    <button class="btn-primary" @onclick="() => EditClick(p)">Edit</button>
+                                </span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

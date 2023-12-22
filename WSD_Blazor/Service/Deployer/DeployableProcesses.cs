@@ -1,19 +1,19 @@
 ﻿namespace WSD_Blazor.Service.Deployer
 {
-    public class ProcessModel
+    public class DeployableProcesses
     {
         public string Name { get; set; }
 
         public List<DeployableParams> DeployParametersList { get; set; }
 
 
-        public ProcessModel(string name, List<DeployableParams> deployParametersList)
+        public DeployableProcesses(string name, List<DeployableParams> deployParametersList)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             DeployParametersList = deployParametersList ?? throw new ArgumentNullException(nameof(deployParametersList));
         }
 
-        public ProcessModel()
+        public DeployableProcesses()
         {
             DeployParametersList = new List<DeployableParams>();
             Name = "";
@@ -33,11 +33,5 @@
 
             public DeployableParams() {  }
         }
-    }
-
-    public enum ProcessType
-    {
-        Exe,
-        Url
     }
 }

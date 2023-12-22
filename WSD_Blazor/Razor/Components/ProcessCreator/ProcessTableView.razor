@@ -1,0 +1,91 @@
+@code {
+    [Parameter]
+    public ProcessListDTO DTO { get; set; }
+
+    [Inject]
+    private NavigationManager? NavigationManager { get; set; }
+    private void NavigateHome() => NavigationManager?.NavigateTo("/");
+
+    private DataManager dataManager = DataManager.Instance;
+
+    private List<DeployableProcesses.DeployableParams> Params;
+    private DeployableProcesses Model { get; set; }
+    private bool IsNewModel { get; set; }
+    private string? InitialKey { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Model = DTO.Model;
+        IsNewModel = DTO.IsNewModel;
+        InitialKey = DTO.InitialKey;
+        Params = new(DTO.Model.DeployParametersList);
+    }
+
+    private void AddProcessClick()
+    {
+        var newParam = new DeployableProcesses.DeployableParams();
+        newParam.Type = ProcessType.Url;
+        Params.Add(newParam);
+    }
+
+    private void SubmitClick()
+    {
+        if (!string.IsNullOrEmpty(Model.Name))
+        {
+            if (IsNewModel)
+            {
+                dataManager.AddNewProcess(Model);
+            }
+            else
+            {
+                Model.DeployParametersList = Params;
+                dataManager.UpdateProcess(
+                    InitialKey ?? throw new NullReferenceException("IsNewModel must be true if key is null")
+                , Model);
+            }
+            NavigateHome();
+        }
+    }
+
+    private ProcessCreationDTO getDTO(DeployableProcesses.DeployableParams dp)
+    {
+        return new ProcessCreationDTO(dp, Params);
+    }
+
+    private void HandleChildStateChangeCallBack()
+    {
+        StateHasChanged();
+    }
+}
+
+<div class="centered-content">
+    <div class="outerDiv">
+        <h2 class="subtitle">Processes</h2>
+
+        <div class="processMenuDiv">
+            <span>
+                <label>Name: </label>
+                <input @bind=Model.Name autocomplete="nope" />
+            </span>
+            <button class="btn-primary" @onclick="AddProcessClick">Add Process</button>
+        </div>
+
+        <div class="tableContainer2">
+            <table>
+                <thead>
+                </thead>
+                <tbody>
+                    @foreach (var p in Params)
+                    {
+                        <ProcessListItem DTO=@getDTO(p)
+                                         NotifyParentOfStateChange=@HandleChildStateChangeCallBack />
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div>
+        <button class="divrow btn-primary" @onclick="SubmitClick">Submit</button>
+    </div>
+</div>

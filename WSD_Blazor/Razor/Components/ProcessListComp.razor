@@ -1,0 +1,42 @@
+@code {
+    [Parameter]
+    public ProcessListDTO DTO { get; set; }
+
+    private List<DeployableProcesses.DeployableParams>? Params { get; set; }
+
+    private bool ManageExePaths { get; set; } = false;
+
+    private void ToggleExecutablesManager()
+    {
+        ManageExePaths = !ManageExePaths;
+        StateHasChanged();
+    }
+
+    private string getButtonText()
+    {
+        return !ManageExePaths ? " Manage Executables" : "Create Deployable";
+    }
+
+    private void HandleChildSaveButtonClick()
+    {
+        ToggleExecutablesManager();
+    }
+    //TODO Handle Exceptions when user fucks up the args and url etc.
+}
+
+<div>
+    <div class="divrow">
+        <button class="btn-primary" @onclick="ToggleExecutablesManager">@getButtonText()</button>
+    </div>
+    <div>
+
+        <div hidden="@(!ManageExePaths)">
+            <ExecutableManagerView SaveClickCallback=HandleChildSaveButtonClick />
+        </div>
+
+        <div hidden="@(ManageExePaths)">
+            <ProcessTableView DTO=@DTO />
+        </div>
+
+    </div>
+</div>

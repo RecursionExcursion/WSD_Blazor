@@ -1,0 +1,104 @@
+@code {
+    [Parameter]
+    public ProcessCreationDTO DTO { get; set; }
+
+    [Parameter]
+    public EventCallback NotifyParentOfStateChange { get; set; }
+
+    private DeployableProcesses.DeployableParams p { get; set; }
+    private List<DeployableProcesses.DeployableParams>? Params { get; set; }
+
+    protected override void OnInitialized()
+    {
+        p = DTO.DeployableParam;
+        Params = DTO.Params;
+    }
+
+    private DataManager dataManager = DataManager.Instance;
+
+    private string ExeLabel { get; } = "Exe:";
+    private string UrlLabel { get; } = "Url:";
+
+    private bool IsUrl(DeployableProcesses.DeployableParams p) => p.Type == ProcessType.Url;
+    private bool IsExe(DeployableProcesses.DeployableParams p) => p.Type == ProcessType.Exe;
+    private void SwitchType(DeployableProcesses.DeployableParams p) => p.Type = p.Type == ProcessType.Exe ? ProcessType.Url : ProcessType.Exe;
+
+    private bool IsSelected(Executable exe, string selectedPath)
+    {
+        string decodedSelectedPath = WebUtility.UrlDecode(selectedPath);
+        bool b = exe.Path == decodedSelectedPath;
+        return b;
+    }
+
+    private void DeleteClick(DeployableProcesses.DeployableParams p)
+    {
+        Params.Remove(p);
+        NotifyParentOfStateChange.InvokeAsync();
+        StateHasChanged();
+    }
+
+    public void TestClick(DeployableProcesses.DeployableParams p)
+    {
+        DeployableProcesses dp = new("Test", new List<DeployableProcesses.DeployableParams> { p });
+        ProcessManager.ExecuteProcesses(dp);
+    }
+
+    private string getRadioName()
+    {
+        return "radioOptions" + DTO.DeployableParam.GetHashCode();
+    }
+}
+
+<tr>
+    <td>
+        <input type="radio" id="exe" name=@getRadioName() checked="@IsExe(p)" @onchange="()=>SwitchType(p)" />
+        <label for="option1">Exe</label>
+
+        <input type="radio" id="url" name=@getRadioName() checked="@IsUrl(p)" @onchange="()=>SwitchType(p)" />
+        <label for="option2">Url</label>
+    </td>
+    <td>
+
+        
+
+            <!-- Exe -->
+            <div hidden="@(!IsExe(p))">
+                <div class="centered-content">
+                    <span >
+                        <label>@ExeLabel</label>
+                        <select @bind=p.Exe>
+                            @foreach (var exe in dataManager.State.Executables)
+                            {
+                                if (IsSelected(exe, p.Exe))
+                                {
+                                    <option  value="@exe.Path" selected>@exe.Name</option>
+
+                                }
+                                else
+                                {
+                                    <option  value="@exe.Path">@exe.Name</option>
+                                }
+                            }
+                        </select>
+                    </span>
+                    <span>
+                        <label>Args:</label> <input @bind=p.Args />
+                    </span>
+                </div>
+            </div>
+
+            <!-- Url -->
+            <div hidden="@(IsExe(p))">
+                <label>@UrlLabel</label>
+                <input @bind:event="oninput" @bind=p.Exe />
+            </div>
+
+       
+    </td>
+    <td>
+        <span>
+            <button class="btn-primary" @onclick="() => TestClick(p)">Test</button>
+            <button class="btn-primary" @onclick="() => DeleteClick(p)">Delete</button>
+        </span>
+    </td>
+</tr>

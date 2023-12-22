@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using WSD_Blazor.Data;
+using WSD_Blazor.Repository.State;
 using WSD_Blazor.Service.Deployer;
 
 namespace WSD_Blazor.Repository
@@ -8,56 +9,69 @@ namespace WSD_Blazor.Repository
     {
         private static readonly Serializer serializer = Serializer.Instance;
 
-        private static readonly Lazy<DataManager> lazyInstance = new Lazy<DataManager>(() => new DataManager());
+        private static readonly Lazy<DataManager> lazyInstance = new(() => new DataManager());
 
         public static DataManager Instance => lazyInstance.Value;
 
-        public Dictionary<string, ProcessModel> ProcessModels { get; set; } = serializer.LoadData() ?? new();
+        public AppState State { get; set; } = serializer.LoadData() ?? new();
 
         private DataManager() { }
 
-        public void AddNewProcess(ProcessModel model)
+        public void AddNewProcess(DeployableProcesses model)
         {
-            if (ProcessModels.TryAdd(model.Name, model))
+            if (State.ProcessModels.TryAdd(model.Name, model))
             {
                 SyncData();
             }
         }
 
-        public ProcessModel GetProcessByName(string name) => ProcessModels[name];
+        public DeployableProcesses GetProcessByName(string name) => State.ProcessModels[name];
 
-        public void RemoveProcess(ProcessModel model)
+        public void RemoveProcess(DeployableProcesses model)
         {
             if (model != null)
             {
-                ProcessModels.Remove(model.Name);
+                State.ProcessModels.Remove(model.Name);
                 SyncData();
             }
         }
 
-        public void UpdateProcess(ProcessModel model)
+        public void UpdateProcess(DeployableProcesses model)
         {
-            if (ProcessModels.ContainsKey(model.Name))
+            if (State.ProcessModels.ContainsKey(model.Name))
             {
-                ProcessModels[model.Name] = model;
+                State.ProcessModels[model.Name] = model;
             }
             SyncData();
         }
 
-        public void UpdateProcess(ProcessModel initalModel, ProcessModel newModel)
+        public void UpdateProcess(string intialKey, DeployableProcesses newModel)
         {
-            if (!string.Equals(initalModel.Name, newModel.Name))
+            if (!string.Equals(intialKey, newModel.Name))
             {
-                RemoveProcess(initalModel);
+                State.ProcessModels.Remove(intialKey);
             }
-            ProcessModels[newModel.Name] = newModel;
+            State.ProcessModels[newModel.Name] = newModel;
+            SyncData();
+        }
+
+
+        public void AddExecutable(string name, string path)
+        {
+            State.Executables.Add(new(name, path));
+            SyncData();
+        }
+
+        public void DeleteExecutable(Executable exe)
+        {
+            State.Executables.Remove(exe);
             SyncData();
         }
 
         public void SyncData() => SaveToFile();
 
-        private void LoadFromFile() => ProcessModels = serializer.LoadData() ?? new Dictionary<string, ProcessModel>();
+        private void LoadFromFile() => State = serializer.LoadData() ?? new AppState();
 
-        private void SaveToFile() => serializer.SaveData(ProcessModels);
+        private void SaveToFile() => serializer.SaveData(State);
     }
 }

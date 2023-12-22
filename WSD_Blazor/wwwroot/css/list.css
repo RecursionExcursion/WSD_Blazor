@@ -1,0 +1,50 @@
+ul, ol {
+    background-color: var(--medium);
+
+    list-style: none;
+
+    margin: 20px auto;
+    padding: 0;
+    padding: 10px;
+
+    border: 1px solid #ccc;
+    border-radius: 5px;
+
+    width: 90vw;
+   
+    max-height: 15rem;
+
+    overflow-y: auto;
+}
+
+li {
+    background-color: var(--lightest);
+   
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: center;
+
+    margin-bottom: 5px;
+    padding: 5px 10px;
+
+    border-radius: 3px;
+}
+
+li span {
+    display: flex;
+    margin: auto 0;
+    gap: 1rem;
+}
+
+
+
+.listborder button {
+    min-width: 5rem;
+}
+
+
+
+.spanGap{
+    gap: 1.7rem;
+}

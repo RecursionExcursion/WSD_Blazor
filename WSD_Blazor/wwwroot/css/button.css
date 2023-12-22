@@ -1,5 +1,29 @@
+button {
+    padding: .5rem;
+    font-weight: 600;
+    border-radius: .2rem;
+    min-width: 10rem;
+    height: fit-content;
+    border: .1rem solid var(--lightest);
+}
 
+button:hover {
+    background-color: darkseagreen;
+}
 
-.newButton{
-    color: red;
+button:focus-visible{
+    outline-color:var(--lightest);
+}
+
+.btn-primary {
+    background-color: var(--darkest);
+    color: var(--textcolor);
+    border-color: var(--white);
+    margin: auto
+}
+
+.btn-primary:hover {
+    background-color: var(--medium);
+    color: var(--textcolor);
+    border-color: var(--white);
 }

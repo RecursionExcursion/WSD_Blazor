@@ -1,52 +1,41 @@
-@page "/process/{modelJson}"
+@page "/process/{keyJson?}"
 
 @code {
     [Parameter]
-    public string ModelJson { get; set; }
+    public string? KeyJson { get; set; }
 
-    private ProcessModel Model { get; set; }
+    [Inject]
+    private NavigationManager? NavigationManager { get; set; }
 
+    private DeployableProcesses Model { get; set; }
     private DataManager dataManager = DataManager.Instance;
+    private DeployableProcesses? initialModelCopy;
 
-    private ProcessModel? initialModelCopy;
+    private bool isNewModel = false;
+    private string? initalKey;
 
     protected override void OnInitialized()
     {
-        Model = JsonSerializer.Deserialize<ProcessModel>(ModelJson) ?? throw new ArgumentNullException(nameof(Model));
-        if (!string.IsNullOrEmpty(Model.Name))
+        if (KeyJson != null)
         {
+            string? key = JsonSerializer.Deserialize<string>(KeyJson);
+            initalKey = key;
+
+            Model = dataManager.State.ProcessModels[key ?? throw new ArgumentNullException()];
             initialModelCopy = new()
                 {
                     Name = Model.Name,
                     DeployParametersList = Model.DeployParametersList
-
                 };
         }
-    }
-
-    [Inject]
-    private NavigationManager? NavigationManager { get; set; }
-    private void NavigateHome() => NavigationManager?.NavigateTo("/");
-
-    private void AddProcessClick() => Model.DeployParametersList.Add(new ProcessModel.DeployableParams());
-
-
-    private void SubmitClick()
-    {
-        if (!string.IsNullOrEmpty(Model.Name))
+        else
         {
-            if (initialModelCopy == null)
-            {
-                dataManager.AddNewProcess(Model);
-            }
-            else
-            {
-                dataManager.UpdateProcess(initialModelCopy, Model);
-            }
-            NavigateHome();
+            Model = new();
+            isNewModel = true;
         }
     }
 
+    private void NavigateHome() => NavigationManager?.NavigateTo("/");
     private void BackClick() => NavigateHome();
 
     private void DeleteClick()
@@ -57,28 +46,22 @@
             NavigateHome();
         }
     }
+
+    private ProcessListDTO getDTO()
+    {
+        return new ProcessListDTO(Model, isNewModel, initalKey);
+    }
 }
 
-<div>
-    <div class="divrow">
-        <div>
-            <button @onclick="BackClick">Back</button>
-        </div>
+<div class="process-builder">
+    <div class="btn-container">
+        <button class="btn-primary" @onclick="BackClick">Back</button>
         @if (initialModelCopy != null)
         {
-            <div>
-                <button @onclick="DeleteClick">Delete</button>
-            </div>
+            <button class="btn-primary" @onclick="DeleteClick">Delete</button>
         }
     </div>
 
-    <div>
-        <label>Name: </label><input @bind=Model.Name autocomplete="nope" />
-    </div>
+    <ProcessListComp DTO=@getDTO() />
 
-    <ProcessList Model=Model />
-
-    <div>
-        <button @onclick="SubmitClick">Submit</button>
-    </div>
 </div>
