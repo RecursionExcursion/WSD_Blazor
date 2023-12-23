@@ -2,23 +2,30 @@
     [Parameter]
     public EventCallback SaveClickCallback { get; set; }
 
-    DataManager dataManager = DataManager.Instance;
+    private DataManager dataManager = DataManager.Instance;
+
+    private List<Executable> Exes = null!;
+
+    protected override void OnInitialized()
+    {
+        Exes = new List<Executable>(dataManager.State.Executables);
+    }
 
     public void AddExeClick()
     {
-        //TODO Saves before Save is clicked.
-        dataManager.AddExecutable("Name", "Path");
+        Exes.Add(new Executable("", ""));
         StateHasChanged();
     }
 
     public void DeleteExe(Executable exe)
     {
-        dataManager.DeleteExecutable(exe);
+        Exes.Remove(exe);
         StateHasChanged();
     }
 
     public void SaveExe()
     {
+        dataManager.State.Executables = Exes;
         dataManager.SyncData();
         SaveClickCallback.InvokeAsync();
     }
@@ -32,7 +39,7 @@
             <table>
                 <thead> </thead>
                 <tbody>
-                    @foreach (var e in dataManager.State.Executables)
+                    @foreach (var e in Exes)
                     {
                         <tr>
                             <td>

@@ -65,6 +65,7 @@
         <!-- Exe -->
         <div hidden="@(!IsExe(DP))">
             <div class="centered-content">
+
                 <span>
                     <label>@ExeLabel</label>
                     <select @bind=DP.Exe>
@@ -73,7 +74,6 @@
                             if (IsSelected(exe, DP.Exe))
                             {
                                 <option value="@exe.Path" selected>@exe.Name</option>
-
                             }
                             else
                             {
@@ -82,16 +82,20 @@
                         }
                     </select>
                 </span>
+
                 <span>
                     <label>Args:</label> <input @bind=DP.Args />
                 </span>
+
             </div>
         </div>
 
         <!-- Url -->
         <div hidden="@(IsExe(DP))">
-            <label>@UrlLabel</label>
-            <input @bind:event="oninput" @bind=DP.Exe />
+            <span>
+                <label>@UrlLabel</label>
+                <input @bind:event="oninput" @bind=DP.Exe />
+            </span>
         </div>
 
     </td>

@@ -16,27 +16,33 @@ table {
 th {
     background-color: var(--darkest);
     font: var(--textcolor);
-    border: .001rem solid var(--textcolor);
+    font-size: 18px;
 }
 
 tr {
 }
 
     tr:nth-child(even) {
-        background-color: var(--medium);
+        background-color: var(--darkest);
     }
 
     tr:nth-child(odd) {
-        background-color: var(--darkest);
+        background-color: var(--medium);
     }
 
 td {
     padding: .4rem;
+    min-width: 20vw;
+    text-align: center;
 }
 
     td span {
         display: flex;
         flex-direction: row;
+    }
+
+    td span *{
+        min-width: 3rem;
     }
 
 .tableContainer {
@@ -57,5 +63,5 @@ td {
 }
 
 .processTableContainer {
-    max-height: 50vh;
+    max-height: 40vh;
 }
