@@ -2,11 +2,11 @@
 {
     public static class ProcessManager
     { 
-        public static void ExecuteProcesses(DeployableProcesses processes)
+        public static void ExecuteProcesses(DeploymentOrder processes)
         {
             ProcessExecutor executor = new();
 
-            foreach (var p in processes.DeployParametersList)
+            foreach (var p in processes.DeploymentParameters)
             {
                 if (p.Type == ProcessType.Url)
                 {

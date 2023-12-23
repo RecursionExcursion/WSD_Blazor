@@ -31,9 +31,13 @@ tr {
     }
 
 td {
-  
     padding: .4rem;
 }
+
+    td span {
+        display: flex;
+        flex-direction: row;
+    }
 
 .tableContainer {
     display: flex;

@@ -1,11 +1,9 @@
 ﻿using System.Text.Json;
 using WSD_Blazor.Repository.State;
-using WSD_Blazor.Service.Deployer;
 
 namespace WSD_Blazor.Data
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>")]
-    /* Methods must not be static, Folders must be initalized first*/
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Methods must not be static, Folders must be initalized first")]
     public class Serializer
     {
         private static readonly string UserDocuments = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
@@ -48,14 +46,6 @@ namespace WSD_Blazor.Data
             AppState? userProfiles = JsonSerializer.Deserialize<AppState>(usersJson);
             return userProfiles;
         }
-        //public Dictionary<string, ProcessModel>? LoadData()
-        //{
-        //    string[] lines = File.ReadAllLines(GetFilePath());
-
-        //    string usersJson = string.Join(Environment.NewLine, lines);
-        //    Dictionary<string, ProcessModel>? userProfiles = JsonSerializer.Deserialize<Dictionary<string, ProcessModel>>(usersJson);
-        //    return userProfiles;
-        //}
 
         private static void CreateFilePathIfAbsent() => Directory.CreateDirectory(GetFolderPath());
 

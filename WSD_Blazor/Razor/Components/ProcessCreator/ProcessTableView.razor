@@ -1,60 +1,79 @@
 @code {
     [Parameter]
-    public ProcessListDTO DTO { get; set; }
+    public ProcessListDTO TableDTO { get; set; }
 
     [Inject]
     private NavigationManager? NavigationManager { get; set; }
+
     private void NavigateHome() => NavigationManager?.NavigateTo("/");
 
     private DataManager dataManager = DataManager.Instance;
 
-    private List<DeployableProcesses.DeployableParams> Params;
-    private DeployableProcesses Model { get; set; }
+    private List<DeploymentParams> Params;
+    private DeploymentOrder Order { get; set; }
     private bool IsNewModel { get; set; }
     private string? InitialKey { get; set; }
 
     protected override void OnInitialized()
     {
-        Model = DTO.Model;
-        IsNewModel = DTO.IsNewModel;
-        InitialKey = DTO.InitialKey;
-        Params = new(DTO.Model.DeployParametersList);
+        Order = TableDTO.Order;
+        IsNewModel = TableDTO.IsNewModel;
+        InitialKey = TableDTO.InitialKey;
+        Params = new List<DeploymentParams>(TableDTO.Order.DeepCopy().DeploymentParameters);
     }
 
     private void AddProcessClick()
     {
-        var newParam = new DeployableProcesses.DeployableParams();
+        var newParam = new DeploymentParams();
         newParam.Type = ProcessType.Url;
         Params.Add(newParam);
     }
 
     private void SubmitClick()
     {
-        if (!string.IsNullOrEmpty(Model.Name))
+        if (!string.IsNullOrEmpty(Order.Name))
         {
             if (IsNewModel)
             {
-                dataManager.AddNewProcess(Model);
+                dataManager.AddNewProcess(Order);
             }
             else
             {
-                Model.DeployParametersList = Params;
+                Order.DeploymentParameters = Params;
                 dataManager.UpdateProcess(
                     InitialKey ?? throw new NullReferenceException("IsNewModel must be true if key is null")
-                , Model);
+                , Order);
             }
             NavigateHome();
         }
     }
 
-    private ProcessCreationDTO getDTO(DeployableProcesses.DeployableParams dp)
+    private ProcessCreationDTO getDTO(DeploymentParams dp)
     {
         return new ProcessCreationDTO(dp, Params);
     }
 
-    private void HandleChildStateChangeCallBack()
+    private void HandleChildStateChangeRemoveItemCallBack(DeploymentParams dp)
     {
+        Params.Remove(dp);
+
         StateHasChanged();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        // Log relevant information for debugging
+        System.Diagnostics.Debug.Print($"Params Count: {Params.Count}");
+        int i = 0;
+        foreach (var p in Params)
+        {
+            System.Diagnostics.Debug.Print($"Param: {i++}");
+            System.Diagnostics.Debug.Print(p.Exe);
+            System.Diagnostics.Debug.Print(p.Args);
+
+        }
+
+        base.OnAfterRender(firstRender);
     }
 }
 
@@ -65,7 +84,7 @@
         <div class="processMenuDiv">
             <span>
                 <label>Name: </label>
-                <input @bind=Model.Name autocomplete="nope" />
+                <input @bind=Order.Name autocomplete="nope" />
             </span>
             <button class="btn-primary" @onclick="AddProcessClick">Add Process</button>
         </div>
@@ -75,10 +94,9 @@
                 <thead>
                 </thead>
                 <tbody>
-                    @foreach (var p in Params)
+                    @foreach (var dp in Params)
                     {
-                        <ProcessListItem DTO=@getDTO(p)
-                                         NotifyParentOfStateChange=@HandleChildStateChangeCallBack />
+                        <ProcessListItem DP=dp NotifyParentOfStateChange=@HandleChildStateChangeRemoveItemCallBack />
                     }
                 </tbody>
             </table>

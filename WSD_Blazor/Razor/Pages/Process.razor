@@ -7,9 +7,9 @@
     [Inject]
     private NavigationManager? NavigationManager { get; set; }
 
-    private DeployableProcesses Model { get; set; }
+    private DeploymentOrder Order { get; set; }
+    private DeploymentOrder OrderCopy { get; set; }
     private DataManager dataManager = DataManager.Instance;
-    private DeployableProcesses? initialModelCopy;
 
     private bool isNewModel = false;
     private string? initalKey;
@@ -21,16 +21,12 @@
             string? key = JsonSerializer.Deserialize<string>(KeyJson);
             initalKey = key;
 
-            Model = dataManager.State.ProcessModels[key ?? throw new ArgumentNullException()];
-            initialModelCopy = new()
-                {
-                    Name = Model.Name,
-                    DeployParametersList = Model.DeployParametersList
-                };
+            Order = dataManager.State.DeploymentOrderMap[key ?? throw new ArgumentNullException()];
+            OrderCopy = Order.DeepCopy();
         }
         else
         {
-            Model = new();
+            Order = new();
             isNewModel = true;
         }
     }
@@ -40,23 +36,24 @@
 
     private void DeleteClick()
     {
-        if (initialModelCopy != null)
+        if (Order != null)
         {
-            dataManager.RemoveProcess(initialModelCopy);
+            dataManager.RemoveProcess(Order);
             NavigateHome();
         }
     }
 
     private ProcessListDTO getDTO()
     {
-        return new ProcessListDTO(Model, isNewModel, initalKey);
+        return new ProcessListDTO(Order, isNewModel, initalKey);
     }
 }
 
 <div class="process-builder">
+
     <div class="btn-container">
         <button class="btn-primary" @onclick="BackClick">Back</button>
-        @if (initialModelCopy != null)
+        @if (Order != null)
         {
             <button class="btn-primary" @onclick="DeleteClick">Delete</button>
         }

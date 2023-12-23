@@ -2,7 +2,7 @@
     [Parameter]
     public ProcessListDTO DTO { get; set; }
 
-    private List<DeployableProcesses.DeployableParams>? Params { get; set; }
+    private List<DeploymentParams>? Params { get; set; }
 
     private bool ManageExePaths { get; set; } = false;
 
@@ -35,7 +35,7 @@
         </div>
 
         <div hidden="@(ManageExePaths)">
-            <ProcessTableView DTO=@DTO />
+            <ProcessTableView TableDTO=@DTO />
         </div>
 
     </div>

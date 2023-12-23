@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using WSD_Blazor.Data;
+﻿using WSD_Blazor.Data;
 using WSD_Blazor.Repository.State;
 using WSD_Blazor.Service.Deployer;
 
@@ -17,41 +16,41 @@ namespace WSD_Blazor.Repository
 
         private DataManager() { }
 
-        public void AddNewProcess(DeployableProcesses model)
+        public void AddNewProcess(DeploymentOrder model)
         {
-            if (State.ProcessModels.TryAdd(model.Name, model))
+            if (State.DeploymentOrderMap.TryAdd(model.Name, model))
             {
                 SyncData();
             }
         }
 
-        public DeployableProcesses GetProcessByName(string name) => State.ProcessModels[name];
+        public DeploymentOrder GetProcessByName(string name) => State.DeploymentOrderMap[name];
 
-        public void RemoveProcess(DeployableProcesses model)
+        public void RemoveProcess(DeploymentOrder model)
         {
             if (model != null)
             {
-                State.ProcessModels.Remove(model.Name);
+                State.DeploymentOrderMap.Remove(model.Name);
                 SyncData();
             }
         }
 
-        public void UpdateProcess(DeployableProcesses model)
+        public void UpdateProcess(DeploymentOrder model)
         {
-            if (State.ProcessModels.ContainsKey(model.Name))
+            if (State.DeploymentOrderMap.ContainsKey(model.Name))
             {
-                State.ProcessModels[model.Name] = model;
+                State.DeploymentOrderMap[model.Name] = model;
             }
             SyncData();
         }
 
-        public void UpdateProcess(string intialKey, DeployableProcesses newModel)
+        public void UpdateProcess(string intialKey, DeploymentOrder newModel)
         {
             if (!string.Equals(intialKey, newModel.Name))
             {
-                State.ProcessModels.Remove(intialKey);
+                State.DeploymentOrderMap.Remove(intialKey);
             }
-            State.ProcessModels[newModel.Name] = newModel;
+            State.DeploymentOrderMap[newModel.Name] = newModel;
             SyncData();
         }
 
@@ -59,7 +58,6 @@ namespace WSD_Blazor.Repository
         public void AddExecutable(string name, string path)
         {
             State.Executables.Add(new(name, path));
-            SyncData();
         }
 
         public void DeleteExecutable(Executable exe)

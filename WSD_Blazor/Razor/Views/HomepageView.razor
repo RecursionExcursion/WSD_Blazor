@@ -4,25 +4,25 @@
 
     private string Title = "Deployables";
 
-    private List<DeployableProcesses> processModels = DataManager.Instance.State.ProcessModels.Values.ToList();
+    private List<DeploymentOrder> processModels = DataManager.Instance.State.DeploymentOrderMap.Values.ToList();
 
-    private void DeployClick(DeployableProcesses process)
+    private void DeployClick(DeploymentOrder process)
     {
         ProcessManager.ExecuteProcesses(process);
     }
 
-    private void EditClick(DeployableProcesses model) => SendModelToPage(model);
+    private void EditClick(DeploymentOrder model) => SendModelToProcessPage(model);
 
-    private void NewProcessClick() => SendModelToPage();
+    private void NewProcessClick() => SendModelToProcessPage();
 
-    private void SendModelToPage(DeployableProcesses model)
+    private void SendModelToProcessPage(DeploymentOrder model)
     {
         string serializedModel = JsonSerializer.Serialize(model.Name);
         string json = HttpUtility.UrlEncode(serializedModel);
         NavigationManager?.NavigateTo($"/process/{json}");
     }
 
-    private void SendModelToPage()
+    private void SendModelToProcessPage()
     {
         NavigationManager?.NavigateTo($"/process");
     }
