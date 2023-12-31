@@ -49,6 +49,19 @@
         base.OnAfterRender(firstRender);
     }
 
+    public void BrowseFiles()
+    {
+        if (string.IsNullOrEmpty(DP.Args))
+        {
+            DP.Args = FileBrowser.OpenFilePathToString() ?? string.Empty;
+        }
+        else
+        {
+            DP.Args = FileBrowser.OpenFilePathToString(DP.Args) ?? string.Empty;
+        }
+
+        StateHasChanged();
+    }
 
 }
 
@@ -84,7 +97,7 @@
                 </span>
 
                 <span>
-                    <label>Args:</label> <input @bind=DP.Args />
+                    <label>Args:</label> <input @onmousedown="()=>BrowseFiles()" @bind=DP.Args />
                 </span>
 
             </div>

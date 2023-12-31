@@ -1,0 +1,44 @@
+<!-- MyComponent.razor -->
+@page "/mycomponent"
+
+<h3>My Component</h3>
+
+<button class="btn btn-primary" @onclick="ShowModal">Show Modal</button>
+
+<MyModal />
+
+@code {
+    private bool showModal = false;
+
+    private void ShowModal()
+    {
+        showModal = true;
+    }
+
+    private void CloseModal()
+    {
+        showModal = false;
+    }
+}
+
+
+
+
+
+<!-- MyModal.razor -->
+<div class="modal" @style="($" display: {(showModal ? "block" : "none" )};")">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">My Modal</h5>
+            <button class="close" @onclick="CloseModal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <!-- Add your modal content here -->
+            <p>Hello, this is a modal!</p>
+        </div>
+        <div class="modal-footer">
+            <button @onclick="CloseModal">Close</button>
+            <!-- Add additional buttons if needed -->
+        </div>
+    </div>
+</div>

@@ -14,13 +14,13 @@
     private bool isNewModel = false;
     private string? initalKey;
 
+
     protected override void OnInitialized()
     {
         if (KeyJson != null)
         {
             string? key = JsonSerializer.Deserialize<string>(KeyJson);
-            initalKey = key;
-
+            initalKey = WebUtility.UrlDecode(key);
             Order = dataManager.State.DeploymentOrderMap[key ?? throw new ArgumentNullException()];
             OrderCopy = Order.DeepCopy();
         }
@@ -29,33 +29,72 @@
             Order = new();
             isNewModel = true;
         }
+
     }
 
     private void NavigateHome() => NavigationManager?.NavigateTo("/");
     private void BackClick() => NavigateHome();
 
-    private void DeleteClick()
-    {
-        if (Order != null)
-        {
-            dataManager.RemoveProcess(Order);
-            NavigateHome();
-        }
-    }
 
     private ProcessListDTO getDTO()
     {
         return new ProcessListDTO(Order, isNewModel, initalKey);
     }
+
+
+
+    private bool isDeleting = false;
+
+    private void DeleteClick()
+    {
+        if (Order != null)
+        {
+            isDeleting = true;
+            StateHasChanged();
+            RunTask();
+        }
+    }
+
+    private void ConfirmDelete()
+    {
+        dataManager.RemoveProcess(Order);
+        NavigateHome();
+    }
+
+    private async void RunTask()
+    {
+        Foo();
+    }
+
+    System.Threading.Timer timer;
+
+    protected void Foo()
+    {
+        timer = new System.Threading.Timer(async _ =>  
+      {
+
+      
+          isDeleting = false;
+
+          await InvokeAsync(StateHasChanged);
+      }, null, 3000, 0);
+    }
 }
 
 <div class="process-builder">
-
+    <Help Text=@HelpStrings.ProcessCreationPage Index=1 />
     <div class="btn-container">
         <button class="btn-primary" @onclick="BackClick">Back</button>
         @if (Order != null)
         {
-            <button class="btn-primary" @onclick="DeleteClick">Delete</button>
+            @if (!isDeleting)
+            {
+                <button class="btn-primary" @onclick="DeleteClick">Delete</button>
+            }
+            else
+            {
+                <button class="btn-primary" @onclick="ConfirmDelete">Are you sure?</button>
+            }
         }
     </div>
 

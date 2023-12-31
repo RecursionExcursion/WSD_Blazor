@@ -1,0 +1,22 @@
+.helpbuttonContainer,
+.helpTextContainer {
+    display: flex;
+}
+
+.helpbuttonContainer {
+    display: flex;
+    justify-content: right;
+}
+
+.helpTextContainer {
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.helpButton {
+    margin: inherit;
+    min-width: auto;
+   
+}

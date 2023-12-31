@@ -29,14 +29,12 @@
         <button class="btn-primary" @onclick="ToggleExecutablesManager">@getButtonText()</button>
     </div>
     <div>
-
-        <div hidden="@(!ManageExePaths)">
-            <ExecutableManagerView SaveClickCallback=HandleChildSaveButtonClick />
-        </div>
-
         <div hidden="@(ManageExePaths)">
             <ProcessTableView TableDTO=@DTO />
         </div>
 
+        <div hidden="@(!ManageExePaths)">
+            <ExecutableManagerView SaveClickCallback=HandleChildSaveButtonClick />
+        </div>
     </div>
 </div>

@@ -41,9 +41,9 @@ td {
         flex-direction: row;
     }
 
-    td span *{
-        min-width: 3rem;
-    }
+        td span * {
+            min-width: 3rem;
+        }
 
 .tableContainer {
     display: flex;
@@ -64,4 +64,12 @@ td {
 
 .processTableContainer {
     max-height: 40vh;
+}
+
+.smallProcess {
+    max-height: 28vh;
+}
+
+.smallHome {
+    max-height: 73vh;
 }

@@ -33,6 +33,7 @@
     {
         if (!string.IsNullOrEmpty(Order.Name))
         {
+            Order.Name = Order.Name.Replace(" ", "");
             if (IsNewModel)
             {
                 dataManager.AddNewProcess(Order);

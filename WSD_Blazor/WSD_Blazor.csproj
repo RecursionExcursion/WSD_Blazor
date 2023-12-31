@@ -16,6 +16,11 @@
 
   <ItemGroup>
     <Folder Include="Razor\Components\ExecutableManager\" />
+    <Folder Include="Razor\Components\Popup\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
 </Project>

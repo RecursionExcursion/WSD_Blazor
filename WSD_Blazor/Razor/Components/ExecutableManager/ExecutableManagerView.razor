@@ -29,6 +29,23 @@
         dataManager.SyncData();
         SaveClickCallback.InvokeAsync();
     }
+
+
+    public void BrowseFiles(Executable e)
+    {
+
+        if (e != null)
+        {
+            e.Path = FileBrowser.OpenFilePathToString(e.Path) ?? string.Empty;
+        }
+        else
+        {
+            e.Path = FileBrowser.OpenFilePathToString() ?? string.Empty;
+        }
+
+
+        StateHasChanged();
+    }
 }
 
 <div class="centered-content">
@@ -43,12 +60,13 @@
                     {
                         <tr>
                             <td>
+                                S
                                 <label>Name:</label>
                                 <input @bind:event="oninput" @bind=e.Name />
                             </td>
                             <td>
                                 <label>Path:</label>
-                                <input @bind:event="oninput" @bind=e.Path />
+                                <input @onmousedown="()=>BrowseFiles(e)" @bind:event="oninput" @bind=e.Path />
                             </td>
                             <td>
                                 <button class="btn-primary" @onclick="() => DeleteExe(e)">Delete</button>

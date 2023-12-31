@@ -1,0 +1,34 @@
+@code {
+    [Parameter]
+    public string? Text { get; set; }
+
+    [Parameter]
+    public int? Index { get; set; }
+
+    [Inject]
+    private IJSRuntime? JSRuntime { get; set; }
+
+    private bool ShowHelp { get; set; } = false;
+
+    private async void ToggleHelp()
+    {
+    if (JSRuntime == null)
+        throw new NullReferenceException();
+    ShowHelp = !ShowHelp;
+    await JSRuntime.InvokeVoidAsync("resizeTable", ShowHelp, Index);
+    }
+}
+
+
+
+<div>
+    <div class="helpbuttonContainer">
+        <button class="btn-primary helpButton" @onclick="ToggleHelp">?</button>
+    </div>
+    @if (ShowHelp)
+    {
+        <div class="helpTextContainer">
+            @Text
+        </div>
+    }
+</div>

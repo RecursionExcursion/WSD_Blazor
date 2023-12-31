@@ -1,3 +1,64 @@
 ﻿@page "/"
+@code {
+    [Inject]
+    private NavigationManager? NavigationManager { get; set; }
 
-<HomepageView />
+    private string Title = "Deployables";
+
+    private List<DeploymentOrder> processModels = DataManager.Instance.State.DeploymentOrderMap.Values.ToList();
+
+    private void DeployClick(DeploymentOrder process)
+    {
+        ProcessManager.ExecuteProcesses(process);
+    }
+
+    private void EditClick(DeploymentOrder model) => SendModelToProcessPage(model);
+
+    private void NewProcessClick() => SendModelToProcessPage();
+
+    private void SendModelToProcessPage(DeploymentOrder model)
+    {
+        string serializedModel = JsonSerializer.Serialize(model.Name);
+        string json = HttpUtility.UrlEncode(serializedModel);
+        NavigationManager?.NavigateTo($"/process/{json}");
+    }
+
+    private void SendModelToProcessPage()
+    {
+        NavigationManager?.NavigateTo($"/process");
+    }
+}
+
+<div>
+    <Help Text=@HelpStrings.MainPage Index=0/>
+    <div class="outerDiv">
+
+        <button @onclick="NewProcessClick" class="btn-primary">New Process</button>
+        <div class="tableContainer homeTableContainer">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in processModels)
+                    {
+                        <tr>
+                            <td>
+                                @p.Name
+                            </td>
+                            <td>
+                                <span>
+                                    <button class="btn-primary" @onclick="() => DeployClick(p)">Deploy</button>
+                                    <button class="btn-primary" @onclick="() => EditClick(p)">Edit</button>
+                                </span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

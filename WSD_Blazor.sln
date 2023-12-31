@@ -3,7 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WSD_Blazor", "WSD_Blazor\WSD_Blazor.csproj", "{089FF5DE-BFB3-4FC4-8401-A28A5C3201FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WSD_Blazor", "WSD_Blazor\WSD_Blazor.csproj", "{089FF5DE-BFB3-4FC4-8401-A28A5C3201FD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BE740114-4F6A-4C44-8FA4-55ADA0B867F3}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
